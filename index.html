@@ -55,6 +55,100 @@
             --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            color: var(--gray-900);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 450px;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            pointer-events: auto;
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
+        .toast i {
+            font-size: 1.5rem;
+            color: var(--success);
+        }
+
+        .toast.error i {
+            color: var(--danger);
+        }
+
+        .toast.warning i {
+            color: var(--warning);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0 4px;
+        }
+
+        .toast-close:hover {
+            color: var(--gray-600);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
         html {
             font-size: 16px;
             scroll-behavior: smooth;
@@ -902,6 +996,9 @@
     </style>
 </head>
 <body>
+    <!-- Toast container for notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- ===== WHATSAPP FLOATING BUTTON ===== -->
     <a href="https://wa.me/15484772197?text=Hello%20I%20need%20help%20with%20Active%20Investments" 
        class="whatsapp-float" 
@@ -1499,6 +1596,33 @@
             'JPY': '¥', 'CNY': '¥', 'INR': '₹', 'BRL': 'R$', 'ZAR': 'R'
         };
 
+        // ===== TOAST NOTIFICATION FUNCTION =====
+        function showToast(message, type = 'success', title = 'Success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            else if (type === 'warning') icon = 'fa-exclamation-triangle';
+            
+            toast.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (toast.parentElement) toast.remove();
+            }, 3000);
+        }
+
         // ===== PAGE MANAGEMENT =====
         window.showPage = function(pageId) {
             document.querySelectorAll('.page').forEach(page => {
@@ -1550,13 +1674,13 @@
 
             const users = await db.collection('users').where('email', '==', email).get();
             if (!users.empty) {
-                alert('Email already registered!');
+                showToast('Email already registered!', 'error', 'Error');
                 return;
             }
 
             verificationCode = generateCode();
             pendingEmail = email;
-            alert(`Your verification code is: ${verificationCode}`);
+            showToast(`Verification code sent to ${email}`, 'success', 'Code Sent');
             
             document.getElementById('verifyEmail').textContent = email;
             showPage('verifyPage');
@@ -1569,7 +1693,7 @@
             const code = Array.from(inputs).map(i => i.value).join('');
             
             if (code !== verificationCode) {
-                alert('Invalid code');
+                showToast('Invalid verification code', 'error', 'Error');
                 return;
             }
 
@@ -1600,12 +1724,13 @@
             updateUserUI();
             showPage('userDashboard');
             localStorage.removeItem('pendingSignup');
+            showToast('Account created successfully!', 'success', 'Welcome');
         });
 
         document.getElementById('resendCode').addEventListener('click', (e) => {
             e.preventDefault();
             verificationCode = generateCode();
-            alert(`New verification code: ${verificationCode}`);
+            showToast(`New verification code sent to ${pendingEmail}`, 'success', 'Code Resent');
         });
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -1616,7 +1741,7 @@
 
             const users = await db.collection('users').where('email', '==', email).get();
             if (users.empty) {
-                alert('User not found');
+                showToast('User not found', 'error', 'Error');
                 return;
             }
 
@@ -1624,7 +1749,7 @@
             const userData = userDoc.data();
             
             if (userData.password !== password) {
-                alert('Invalid password');
+                showToast('Invalid password', 'error', 'Error');
                 return;
             }
 
@@ -1634,6 +1759,7 @@
             
             updateUserUI();
             showPage('userDashboard');
+            showToast(`Welcome back, ${currentUser.name}!`, 'success', 'Login Successful');
             
             if (userData.role === 'admin') {
                 document.getElementById('adminPanelBtn').style.display = 'block';
@@ -1641,7 +1767,16 @@
         });
 
         function updateUserUI() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                // Show login/signup buttons
+                document.getElementById('loginNavBtn').style.display = 'inline-block';
+                document.getElementById('signupNavBtn').style.display = 'inline-block';
+                return;
+            }
+            
+            // Hide login/signup buttons when logged in
+            document.getElementById('loginNavBtn').style.display = 'none';
+            document.getElementById('signupNavBtn').style.display = 'none';
             
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('totalBalance').textContent = (currentUser.balance || 0).toFixed(2);
@@ -1671,7 +1806,7 @@
                 date: new Date().toISOString()
             });
 
-            alert('Deposit request submitted!');
+            showToast('Deposit request submitted! Awaiting confirmation.', 'success', 'Deposit Requested');
             document.getElementById('depositForm').reset();
         });
 
@@ -1684,7 +1819,7 @@
             const details = document.getElementById('withdrawDetails').value;
 
             if (amount > currentUser.balance) {
-                alert('Insufficient balance');
+                showToast('Insufficient balance', 'error', 'Error');
                 return;
             }
 
@@ -1699,19 +1834,19 @@
                 date: new Date().toISOString()
             });
 
-            alert('Withdrawal request submitted. It will be processed by admin.');
+            showToast('Withdrawal request submitted. It will be processed by admin.', 'success', 'Request Submitted');
             document.getElementById('withdrawForm').reset();
         });
 
         // ===== INVESTMENT =====
         window.investInPlan = async (plan, amount) => {
             if (!currentUser) {
-                alert('Please login first');
+                showToast('Please login first', 'error', 'Error');
                 return;
             }
 
             if (currentUser.balance < amount) {
-                alert('Insufficient balance. Please fund your wallet.');
+                showToast('Insufficient balance. Please fund your wallet.', 'error', 'Error');
                 return;
             }
 
@@ -1732,12 +1867,12 @@
             currentUser.balance = newBalance;
             updateUserUI();
             
-            alert(`Successfully invested $${amount} in ${plan} Plan!`);
+            showToast(`Successfully invested $${amount} in ${plan} Plan!`, 'success', 'Investment Successful');
         };
 
         // ===== SETTINGS =====
         document.getElementById('twoFactorToggle').addEventListener('change', function() {
-            alert(this.checked ? '2FA enabled (demo)' : '2FA disabled');
+            showToast(this.checked ? '2FA enabled (demo)' : '2FA disabled', 'info', '2FA');
         });
 
         document.getElementById('changePasswordBtn').addEventListener('click', () => {
@@ -1752,12 +1887,12 @@
             const confirm = document.getElementById('confirmNewPassword').value;
 
             if (newPass !== confirm) {
-                alert('Passwords do not match');
+                showToast('Passwords do not match', 'error', 'Error');
                 return;
             }
 
             if (btoa(current) !== currentUser.password) {
-                alert('Current password is incorrect');
+                showToast('Current password is incorrect', 'error', 'Error');
                 return;
             }
 
@@ -1765,7 +1900,7 @@
                 password: btoa(newPass)
             });
 
-            alert('Password updated successfully!');
+            showToast('Password updated successfully!', 'success', 'Success');
             closeModal('changePasswordModal');
             document.getElementById('changePasswordForm').reset();
         });
@@ -1780,7 +1915,7 @@
             currentUser.name = name;
             currentUser.currency = currency;
             updateUserUI();
-            alert('Profile updated successfully!');
+            showToast('Profile updated successfully!', 'success', 'Success');
         });
 
         // ===== ADMIN FUNCTIONS =====
@@ -1875,7 +2010,7 @@
             const userId = document.getElementById('editUserId').value;
             const newBalance = parseFloat(document.getElementById('editNewBalance').value);
             await db.collection('users').doc(userId).update({ balance: newBalance });
-            alert('Balance updated');
+            showToast('Balance updated successfully!', 'success', 'Admin Action');
             closeModal('editBalanceModal');
             showAdminTab('users');
         });
@@ -1885,30 +2020,30 @@
             const newBalance = (user.data().balance || 0) + amount;
             await db.collection('users').doc(userId).update({ balance: newBalance });
             await db.collection('pendingDeposits').doc(depositId).delete();
-            alert('Deposit confirmed');
+            showToast('Deposit confirmed and balance updated.', 'success', 'Admin Action');
             showAdminTab('deposits');
         };
 
         window.approveWithdrawal = async (withdrawalId, userId, amount) => {
-            // Deduct from user balance (already deducted? Actually they request, then admin approves, balance should be deducted at request or approval? We'll deduct on approval)
+            // Deduct from user balance
             const user = await db.collection('users').doc(userId).get();
             const newBalance = (user.data().balance || 0) - amount;
             await db.collection('users').doc(userId).update({ balance: newBalance });
             await db.collection('withdrawals').doc(withdrawalId).update({ status: 'approved' });
-            alert('Withdrawal approved');
+            showToast('Withdrawal approved and balance updated.', 'success', 'Admin Action');
             showAdminTab('withdrawals');
         };
 
         window.saveWithdrawalInstructions = async () => {
             const instructions = document.getElementById('withdrawalInstructionsInput').value;
             await db.collection('settings').doc('withdrawals').set({ instructions });
-            alert('Withdrawal instructions saved');
+            showToast('Withdrawal instructions saved.', 'success', 'Admin Action');
         };
 
         window.savePromoBanner = async () => {
             const html = document.getElementById('promoBannerInput').value;
             await db.collection('settings').doc('promo').set({ html });
-            alert('Promo banner saved');
+            showToast('Promo banner saved.', 'success', 'Admin Action');
             loadPromoBanner(); // reload on public pages
         };
 
@@ -1935,7 +2070,7 @@
         // ===== COPY REFERRAL CODE =====
         window.copyReferralCode = () => {
             navigator.clipboard.writeText(document.getElementById('userReferralCode').textContent);
-            alert('Copied!');
+            showToast('Referral code copied!', 'success', 'Copied');
         };
 
         // ===== CHECK LOGIN =====
@@ -1950,7 +2085,13 @@
                         document.getElementById('adminPanelBtn').style.display = 'block';
                     }
                     loadWithdrawalInstructions();
+                } else {
+                    // Invalid user ID, clear storage
+                    localStorage.removeItem('currentUserId');
+                    updateUserUI(); // will show login buttons
                 }
+            } else {
+                updateUserUI(); // show login buttons when logged out
             }
             loadPromoBanner(); // always load promo banner for public
         }
@@ -2013,7 +2154,9 @@
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('currentUserId');
             currentUser = null;
+            updateUserUI(); // shows login buttons again
             showPage('landingPage');
+            showToast('Logged out successfully', 'info', 'Goodbye');
         });
 
         document.getElementById('adminPanelBtn').addEventListener('click', (e) => {
