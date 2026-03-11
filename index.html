@@ -4,21 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Active Investment – Complete Platform</title>
-    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
     <!-- AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <style>
         *{margin:0; padding:0; box-sizing:border-box;}
         :root{
@@ -31,20 +26,17 @@
         html{font-size:16px; scroll-behavior:smooth;}
         body{font-family:'Inter',sans-serif; background:var(--gray-50); color:var(--gray-800); line-height:1.6; overflow-x:hidden; width:100%;}
         .container{width:100%; max-width:1200px; margin:0 auto; padding:0 15px;}
-        
         .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 24px; border-radius:12px; font-weight:600; font-size:1rem; cursor:pointer; border:none; transition:0.3s; text-decoration:none; white-space:nowrap;}
         .btn-primary{background:var(--primary); color:white;}
         .btn-primary:hover{background:var(--primary-dark); transform:translateY(-2px); box-shadow:var(--shadow-lg);}
         .btn-outline{background:transparent; border:2px solid var(--primary); color:var(--primary);}
         .btn-outline:hover{background:var(--primary); color:white;}
         .btn-sm{padding:8px 16px; font-size:0.9rem;}
-        
         .navbar{background:white; box-shadow:var(--shadow); padding:15px 0; position:sticky; top:0; z-index:1000; width:100%;}
         .nav-content{display:flex; justify-content:space-between; align-items:center;}
         .logo{display:flex; align-items:center; gap:10px; color:var(--primary); font-size:1.5rem; font-weight:700; text-decoration:none;}
         .logo i{font-size:2rem;}
         .menu-btn{background:transparent; border:1px solid var(--gray-200); color:var(--gray-700); font-size:1.5rem; padding:8px 15px; border-radius:10px; cursor:pointer;}
-        
         .side-menu{position:fixed; top:0; right:-300px; width:280px; height:100vh; background:white; box-shadow:var(--shadow-lg); transition:right 0.3s; z-index:2000; padding:30px 20px; overflow-y:auto;}
         .side-menu.open{right:0;}
         .side-menu-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;}
@@ -57,20 +49,16 @@
         .side-menu a.active{background:var(--primary); color:white;}
         .overlay{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500;}
         .overlay.show{display:block;}
-        
         .page{display:none; width:100%; min-height:calc(100vh - 80px);}
         .page.active{display:block;}
-        
         .hero{padding:60px 0; background:linear-gradient(135deg,var(--primary-soft)0%,white 100%);}
         .hero-content{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;}
         .hero-text h1 span{color:var(--primary); display:block;}
         .hero-text p{font-size:1.1rem; color:var(--gray-500); margin-bottom:30px;}
         .hero-buttons{display:flex; gap:15px; flex-wrap:wrap;}
         .hero-image img{width:100%; max-width:500px; border-radius:20px; box-shadow:var(--shadow-lg);}
-        
         .promo-banner{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; padding:40px 20px; text-align:center; border-radius:20px; margin:30px 0; word-break:break-word;}
         .promo-banner h2{color:white; font-size:clamp(1.5rem,4vw,2rem); margin-bottom:20px;}
-        
         .trusted-by{padding:40px 0; background:white; border-top:1px solid var(--gray-200); border-bottom:1px solid var(--gray-200);}
         .trusted-by h3{text-align:center; color:var(--gray-500); font-size:1rem; margin-bottom:30px; text-transform:uppercase; letter-spacing:2px;}
         .stats{display:flex; justify-content:center; gap:60px; flex-wrap:wrap;}
@@ -81,7 +69,6 @@
         .avatar-group{display:flex;}
         .avatar{width:40px; height:40px; border-radius:50%; background:var(--primary); border:2px solid white; margin-left:-10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:600;}
         .avatar:first-child{margin-left:0;}
-        
         .features-grid, .plans-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px;}
         .feature-card, .plan-card{background:white; padding:30px 20px; border-radius:20px; box-shadow:var(--shadow); border:1px solid var(--gray-200); text-align:center; transition:0.3s;}
         .feature-card:hover, .plan-card:hover{transform:translateY(-5px); box-shadow:var(--shadow-lg);}
@@ -91,7 +78,6 @@
         .plan-name{color:var(--primary); font-size:1.3rem; font-weight:700; margin-bottom:10px;}
         .plan-amount{font-size:2rem; font-weight:800; color:var(--gray-900); margin-bottom:5px;}
         .plan-amount small{font-size:1rem; color:var(--gray-500);}
-        
         .auth-container{display:flex; justify-content:center; align-items:center; min-height:calc(100vh - 80px); padding:20px;}
         .auth-card{background:white; border-radius:20px; padding:40px 30px; width:100%; max-width:450px; box-shadow:var(--shadow-lg);}
         .auth-card h2{margin-bottom:10px;}
@@ -100,10 +86,8 @@
         .form-group label{display:block; margin-bottom:8px; color:var(--gray-600); font-weight:500;}
         .form-control{width:100%; padding:12px 15px; border:2px solid var(--gray-200); border-radius:12px; font-size:1rem; transition:0.3s;}
         .form-control:focus{border-color:var(--primary); outline:none; box-shadow:0 0 0 3px var(--primary-soft);}
-        
         .verification-inputs{display:flex; gap:10px; justify-content:center; margin:30px 0; flex-wrap:wrap;}
         .verification-inputs input{width:45px; height:55px; text-align:center; font-size:1.5rem; font-weight:600; border:2px solid var(--gray-200); border-radius:12px;}
-        
         .dashboard-container{min-height:calc(100vh - 80px); background:var(--gray-50); padding:20px; width:100%; overflow-x:hidden;}
         .dashboard-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; flex-wrap:wrap; gap:15px;}
         .dashboard-header h2{font-size:clamp(1.2rem,4vw,1.8rem); word-break:break-word;}
@@ -115,22 +99,18 @@
         .stat-card .value{font-size:1.8rem; font-weight:700; color:var(--gray-900); word-break:break-word;}
         .wallet-card{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border-radius:20px; padding:30px; color:white; margin-bottom:30px; word-break:break-word;}
         .wallet-balance{font-size:2.5rem; font-weight:700; margin:10px 0; word-break:break-word;}
-        
         .custom-investment{background:white; border-radius:20px; padding:30px; margin-top:30px; border:1px solid var(--gray-200);}
         .custom-investment h3{margin-bottom:20px; color:var(--primary);}
         .custom-investment .form-group{max-width:400px; margin-bottom:20px;}
-        
         .method-selector{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin:20px 0;}
         .method-option{background:var(--gray-50); border:2px solid var(--gray-200); border-radius:12px; padding:15px 5px; text-align:center; cursor:pointer; transition:0.3s;}
         .method-option:hover{border-color:var(--primary);}
         .method-option.selected{background:var(--primary); color:white; border-color:var(--primary);}
         .method-option i{font-size:2rem; margin-bottom:5px;}
         .method-details{background:var(--gray-50); padding:20px; border-radius:12px; margin-top:20px; word-break:break-word;}
-        
         .investment-card{background:white; border-radius:16px; padding:20px; margin-bottom:20px; box-shadow:var(--shadow); border:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;}
         .investment-profit{font-size:1.5rem; font-weight:700; color:var(--success);}
         .investment-message{background:var(--primary-soft); padding:15px; border-radius:12px; margin-top:20px; text-align:center; border-left:4px solid var(--primary);}
-        
         .settings-panel{background:white; border-radius:20px; padding:30px; box-shadow:var(--shadow); overflow-x:auto;}
         .settings-section{margin-bottom:30px; padding-bottom:30px; border-bottom:1px solid var(--gray-200);}
         .settings-section:last-child{border-bottom:none;}
@@ -141,7 +121,6 @@
         .slider:before{position:absolute; content:""; height:20px; width:20px; left:3px; bottom:3px; background-color:white; transition:.4s; border-radius:50%;}
         input:checked + .slider{background-color:var(--primary);}
         input:checked + .slider:before{transform:translateX(24px);}
-        
         .admin-container{padding:40px 20px; width:100%; overflow-x:hidden;}
         .admin-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; flex-wrap:wrap; gap:20px;}
         .admin-tabs{display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;}
@@ -152,7 +131,6 @@
         .user-list-item:last-child, .investment-item-admin:last-child{border-bottom:none;}
         .profit-edit{display:flex; gap:5px; align-items:center; flex-wrap:wrap;}
         .profit-edit input{width:100px; padding:5px; border:1px solid var(--gray-300); border-radius:6px;}
-        
         .chat-float{position:fixed; bottom:20px; left:20px; background:var(--primary); color:white; width:55px; height:55px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 10px rgba(0,0,0,0.3); z-index:1000; cursor:pointer; transition:0.3s;}
         .chat-float:hover{transform:scale(1.1); background:var(--primary-dark);}
         .chat-modal{position:fixed; bottom:90px; left:20px; width:320px; max-width:90vw; background:white; border-radius:20px; box-shadow:var(--shadow-lg); z-index:1001; display:none; flex-direction:column; max-height:500px;}
@@ -170,10 +148,8 @@
         .chat-input{display:flex; padding:15px; border-top:1px solid var(--gray-200); gap:10px;}
         .chat-input input{flex:1; padding:10px; border:1px solid var(--gray-300); border-radius:20px; outline:none;}
         .chat-input button{background:var(--primary); color:white; border:none; border-radius:20px; padding:10px 20px; cursor:pointer;}
-        
         .whatsapp-float{position:fixed; bottom:20px; right:20px; background:#25D366; color:white; width:55px; height:55px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 4px 10px rgba(0,0,0,0.3); z-index:999; text-decoration:none;}
         .whatsapp-float:hover{transform:scale(1.1); background:#128C7E;}
-        
         .toast-container{position:fixed; top:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:10px; pointer-events:none;}
         .toast{background:white; color:var(--gray-900); padding:16px 24px; border-radius:12px; box-shadow:var(--shadow-lg); border-left:4px solid var(--success); display:flex; align-items:center; gap:12px; min-width:280px; max-width:450px; animation:slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards; pointer-events:auto;}
         .toast.error{border-left-color:var(--danger);}
@@ -187,7 +163,6 @@
         .toast-close{background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:1.2rem; padding:0 4px;}
         @keyframes slideIn{from{transform:translateX(100%); opacity:0;} to{transform:translateX(0); opacity:1;}}
         @keyframes fadeOut{to{opacity:0; transform:translateX(100%);}}
-        
         @media(max-width:992px){
             .hero-content{grid-template-columns:1fr; text-align:center;}
             .hero-buttons{justify-content:center;}
@@ -220,30 +195,15 @@
     </style>
 </head>
 <body>
-    <!-- Toast container -->
     <div class="toast-container" id="toastContainer"></div>
-
-    <!-- WhatsApp button (customer care) -->
-    <a href="https://wa.me/15484772197?text=Hello%20I%20need%20help%20with%20Active%20Investments" 
-       class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Live chat button -->
+    <a href="https://wa.me/15484772197?text=Hello%20I%20need%20help%20with%20Active%20Investments" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
     <div class="chat-float" id="chatButton"><i class="fas fa-comment"></i></div>
     <div class="chat-modal" id="chatModal">
-        <div class="chat-header">
-            <span><i class="fas fa-comment"></i> Customer Care</span>
-            <button id="closeChat">&times;</button>
-        </div>
+        <div class="chat-header"><span><i class="fas fa-comment"></i> Customer Care</span><button id="closeChat">&times;</button></div>
         <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Type your message...">
-            <button id="sendChat"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <div class="chat-input"><input type="text" id="chatInput" placeholder="Type your message..."><button id="sendChat"><i class="fas fa-paper-plane"></i></button></div>
     </div>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-content">
@@ -253,19 +213,14 @@
         </div>
     </nav>
 
-    <!-- Side menu -->
     <div class="side-menu" id="sideMenu">
-        <div class="side-menu-header">
-            <div class="side-menu-logo"><i class="fas fa-chart-line"></i><span>Active Investment</span></div>
-            <button class="close-menu-btn" id="closeMenuBtn">&times;</button>
-        </div>
+        <div class="side-menu-header"><div class="side-menu-logo"><i class="fas fa-chart-line"></i><span>Active Investment</span></div><button class="close-menu-btn" id="closeMenuBtn">&times;</button></div>
         <ul id="menuItems"></ul>
         <button id="logoutMenuBtn" class="btn btn-outline w-100 mt-2" style="display:none;">Logout</button>
     </div>
     <div class="overlay" id="overlay"></div>
 
-    <!-- ===== PAGES ===== -->
-    <!-- Landing Page -->
+    <!-- Pages -->
     <div id="landingPage" class="page active">
         <section class="hero">
             <div class="container">
@@ -273,43 +228,22 @@
                     <div class="hero-text" data-aos="fade-right">
                         <h1>Invest Smarter with <span>Active Investment</span></h1>
                         <p>A Digital Asset Investment Platform Built on Compliance, Security, and Strategic Growth.</p>
-                        <div class="hero-buttons">
-                            <button class="btn btn-primary" id="getStartedBtn">Start Investing</button>
-                            <button class="btn btn-outline" id="learnMoreBtn">Learn More</button>
-                        </div>
+                        <div class="hero-buttons"><button class="btn btn-primary" id="getStartedBtn">Start Investing</button><button class="btn btn-outline" id="learnMoreBtn">Learn More</button></div>
                     </div>
-                    <div class="hero-image" data-aos="fade-left">
-                        <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=600&auto=format" alt="Crypto">
-                    </div>
+                    <div class="hero-image" data-aos="fade-left"><img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=600&auto=format" alt="Crypto"></div>
                 </div>
             </div>
         </section>
-        <div class="container">
-            <div class="promo-banner" id="promoBanner" data-aos="fade-up">
-                <h2>THIS IS THE BEST TIME TO INVEST</h2>
-                <p>INVEST $10,000 GET $50,000</p>
-                <p>INVEST $50,000 GET $250,000</p>
-            </div>
-        </div>
+        <div class="container"><div class="promo-banner" id="promoBanner" data-aos="fade-up"><h2>THIS IS THE BEST TIME TO INVEST</h2><p>INVEST $10,000 GET $50,000</p><p>INVEST $50,000 GET $250,000</p></div></div>
         <section class="trusted-by" data-aos="fade-up">
             <div class="container">
                 <h3>Trusted by 10,000+ Investors Worldwide</h3>
-                <div class="stats">
-                    <div class="stat-item"><div class="stat-number">10,000+</div><div class="stat-label">Active Users</div></div>
-                    <div class="stat-item"><div class="stat-number">$50M+</div><div class="stat-label">Total Invested</div></div>
-                    <div class="stat-item"><div class="stat-number">150+</div><div class="stat-label">Countries</div></div>
-                </div>
-                <div class="user-avatars">
-                    <div class="avatar-group">
-                        <div class="avatar">👤</div><div class="avatar">👤</div><div class="avatar">👤</div><div class="avatar">👤</div>
-                    </div>
-                    <span>Join our growing community</span>
-                </div>
+                <div class="stats"><div class="stat-item"><div class="stat-number">10,000+</div><div class="stat-label">Active Users</div></div><div class="stat-item"><div class="stat-number">$50M+</div><div class="stat-label">Total Invested</div></div><div class="stat-item"><div class="stat-number">150+</div><div class="stat-label">Countries</div></div></div>
+                <div class="user-avatars"><div class="avatar-group"><div class="avatar">👤</div><div class="avatar">👤</div><div class="avatar">👤</div><div class="avatar">👤</div></div><span>Join our growing community</span></div>
             </div>
         </section>
         <section class="features">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up"><h2>Why Choose Us?</h2><p>Experience the future of crypto investing</p></div>
+            <div class="container"><div class="section-title" data-aos="fade-up"><h2>Why Choose Us?</h2><p>Experience the future of crypto investing</p></div>
                 <div class="features-grid">
                     <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Bank-Grade Security</h3><p>Your assets are protected with multi-layer encryption.</p></div>
                     <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>Professional Trading</h3><p>Advanced algorithms maximize your returns.</p></div>
@@ -318,8 +252,7 @@
             </div>
         </section>
         <section class="plans">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up"><h2>Investment Plans</h2><p>Choose the perfect plan for your goals</p></div>
+            <div class="container"><div class="section-title" data-aos="fade-up"><h2>Investment Plans</h2><p>Choose the perfect plan for your goals</p></div>
                 <div class="plans-grid">
                     <div class="plan-card"><div class="plan-name">Essential Plan</div><div class="plan-amount">$250 <small>min</small></div><button class="btn btn-primary w-100" onclick="showPage('signupPage')">Start Investing</button></div>
                     <div class="plan-card popular"><div class="plan-name">Advanced Plan</div><div class="plan-amount">$2,500 <small>min</small></div><button class="btn btn-primary w-100" onclick="showPage('signupPage')">Start Investing</button></div>
@@ -329,97 +262,24 @@
         </section>
     </div>
 
-    <!-- About Page -->
-    <div id="aboutPage" class="page">
-        <div class="container" style="padding:60px 20px;">
-            <h2 class="section-title">About Active Investment</h2>
-            <p>Active Investment is a digital asset investment platform focused on cryptocurrency portfolio management and quantitative trading strategies. We operate with a strong commitment to regulatory compliance, financial transparency, and responsible asset management practices.</p>
-        </div>
-    </div>
+    <div id="aboutPage" class="page"><div class="container" style="padding:60px 20px;"><h2 class="section-title">About Active Investment</h2><p>Active Investment is a digital asset investment platform focused on cryptocurrency portfolio management and quantitative trading strategies. We operate with a strong commitment to regulatory compliance, financial transparency, and responsible asset management practices.</p></div></div>
 
-    <!-- Referral Page -->
-    <div id="referralPage" class="page">
-        <div class="container" style="padding:60px 20px;">
-            <h2 class="section-title">Referral Program</h2>
-            <div class="features-grid">
-                <div class="feature-card"><h3>Level 1</h3><p style="font-size:2rem; color:var(--primary);">5%</p><p>Direct referrals</p></div>
-                <div class="feature-card"><h3>Level 2</h3><p style="font-size:2rem; color:var(--primary);">2%</p><p>Indirect referrals</p></div>
-                <div class="feature-card"><h3>Level 3</h3><p style="font-size:2rem; color:var(--primary);">1%</p><p>Third level</p></div>
-            </div>
-        </div>
-    </div>
+    <div id="referralPage" class="page"><div class="container" style="padding:60px 20px;"><h2 class="section-title">Referral Program</h2><div class="features-grid"><div class="feature-card"><h3>Level 1</h3><p style="font-size:2rem; color:var(--primary);">5%</p><p>Direct referrals</p></div><div class="feature-card"><h3>Level 2</h3><p style="font-size:2rem; color:var(--primary);">2%</p><p>Indirect referrals</p></div><div class="feature-card"><h3>Level 3</h3><p style="font-size:2rem; color:var(--primary);">1%</p><p>Third level</p></div></div></div></div>
 
-    <!-- Auth Pages -->
-    <div id="signupPage" class="page">
-        <div class="auth-container">
-            <div class="auth-card">
-                <h2>Create Account</h2>
-                <p class="auth-description">Join Active Investment to start your journey.</p>
-                <form id="signupForm">
-                    <div class="form-group"><label>Full Name</label><input type="text" id="signupName" class="form-control" required></div>
-                    <div class="form-group"><label>Email</label><input type="email" id="signupEmail" class="form-control" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="signupPassword" class="form-control" minlength="8" required></div>
-                    <div class="form-group"><label>Currency</label>
-                        <select id="signupCurrency" class="form-control" required>
-                            <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option>
-                            <option value="CAD">🇨🇦 CAD</option><option value="AUD">🇦🇺 AUD</option><option value="JPY">🇯🇵 JPY</option>
-                            <option value="CNY">🇨🇳 CNY</option><option value="INR">🇮🇳 INR</option><option value="BRL">🇧🇷 BRL</option>
-                            <option value="ZAR">🇿🇦 ZAR</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
-                </form>
-                <p class="text-center mt-2">Already have an account? <a href="#" id="toLoginLink" style="color:var(--primary);">Sign In</a></p>
-            </div>
-        </div>
-    </div>
+    <div id="signupPage" class="page"><div class="auth-container"><div class="auth-card"><h2>Create Account</h2><p class="auth-description">Join Active Investment to start your journey.</p><form id="signupForm"><div class="form-group"><label>Full Name</label><input type="text" id="signupName" class="form-control" required></div><div class="form-group"><label>Email</label><input type="email" id="signupEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="signupPassword" class="form-control" minlength="8" required></div><div class="form-group"><label>Currency</label><select id="signupCurrency" class="form-control" required><option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option><option value="CAD">🇨🇦 CAD</option><option value="AUD">🇦🇺 AUD</option><option value="JPY">🇯🇵 JPY</option><option value="CNY">🇨🇳 CNY</option><option value="INR">🇮🇳 INR</option><option value="BRL">🇧🇷 BRL</option><option value="ZAR">🇿🇦 ZAR</option></select></div><button type="submit" class="btn btn-primary w-100">Create Account</button></form><p class="text-center mt-2">Already have an account? <a href="#" id="toLoginLink" style="color:var(--primary);">Sign In</a></p></div></div></div>
 
-    <div id="verifyPage" class="page">
-        <div class="auth-container">
-            <div class="auth-card">
-                <h2>Verify Email</h2>
-                <p class="auth-description">Enter the 6-digit code sent to <span id="verifyEmail"></span></p>
-                <div class="verification-inputs">
-                    <input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code">
-                    <input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code">
-                </div>
-                <button class="btn btn-primary w-100" id="verifyBtn">Verify</button>
-                <p class="text-center mt-2"><a href="#" id="resendCode">Resend Code</a></p>
-            </div>
-        </div>
-    </div>
+    <div id="verifyPage" class="page"><div class="auth-container"><div class="auth-card"><h2>Verify Email</h2><p class="auth-description">Enter the 6-digit code sent to <span id="verifyEmail"></span></p><div class="verification-inputs"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"><input type="text" maxlength="1" class="verify-code"></div><button class="btn btn-primary w-100" id="verifyBtn">Verify</button><p class="text-center mt-2"><a href="#" id="resendCode">Resend Code</a></p></div></div></div>
 
-    <div id="loginPage" class="page">
-        <div class="auth-container">
-            <div class="auth-card">
-                <h2>Welcome Back</h2>
-                <p class="auth-description">Sign in to your account</p>
-                <form id="loginForm">
-                    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" class="form-control" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div>
-                    <button type="submit" class="btn btn-primary w-100">Sign In</button>
-                </form>
-                <p class="text-center mt-2">Don't have an account? <a href="#" id="toSignupLink" style="color:var(--primary);">Sign Up</a></p>
-            </div>
-        </div>
-    </div>
+    <div id="loginPage" class="page"><div class="auth-container"><div class="auth-card"><h2>Welcome Back</h2><p class="auth-description">Sign in to your account</p><form id="loginForm"><div class="form-group"><label>Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button type="submit" class="btn btn-primary w-100">Sign In</button></form><p class="text-center mt-2">Don't have an account? <a href="#" id="toSignupLink" style="color:var(--primary);">Sign Up</a></p></div></div></div>
 
-    <!-- Dashboard -->
     <div id="userDashboard" class="page">
         <div class="dashboard-container">
             <div class="dashboard-header"><h2>Welcome, <span id="userName">User</span>!</h2></div>
-
-            <!-- Overview -->
             <div id="overviewSection" class="dashboard-section active">
                 <div class="wallet-card"><h3>Your Balance</h3><div class="wallet-balance"><span id="userCurrency">$</span><span id="totalBalance">0.00</span></div></div>
-                <div class="stats-grid">
-                    <div class="stat-card"><h3>Active Investments</h3><div class="value" id="activeInvestments">0</div></div>
-                    <div class="stat-card"><h3>Total Profit</h3><div class="value"><span id="userCurrency2">$</span><span id="totalProfit">0.00</span></div></div>
-                </div>
+                <div class="stats-grid"><div class="stat-card"><h3>Active Investments</h3><div class="value" id="activeInvestments">0</div></div><div class="stat-card"><h3>Total Profit</h3><div class="value"><span id="userCurrency2">$</span><span id="totalProfit">0.00</span></div></div></div>
                 <div class="promo-banner" id="dashboardPromoBanner"></div>
             </div>
-
-            <!-- Invest -->
             <div id="investSection" class="dashboard-section">
                 <h2>Investment Plans</h2>
                 <div class="plans-grid">
@@ -427,157 +287,62 @@
                     <div class="plan-card"><h3>Advanced</h3><p class="plan-amount">$2,500</p><button class="btn btn-primary w-100" onclick="investInPlan('Advanced',2500)">Invest</button></div>
                     <div class="plan-card"><h3>Professional</h3><p class="plan-amount">$15,000</p><button class="btn btn-primary w-100" onclick="investInPlan('Professional',15000)">Invest</button></div>
                 </div>
-                <div class="custom-investment">
-                    <h3>Custom Investment</h3>
-                    <p>Hello <span id="customUserName">User</span>, how much are you willing to start with?</p>
-                    <div class="form-group"><label>Enter amount (USD)</label><input type="number" id="customAmount" class="form-control" min="1" placeholder="e.g., 5000"></div>
-                    <button class="btn btn-primary" onclick="investCustom()">Invest Now</button>
-                </div>
+                <div class="custom-investment"><h3>Custom Investment</h3><p>Hello <span id="customUserName">User</span>, how much are you willing to start with?</p><div class="form-group"><label>Enter amount (USD)</label><input type="number" id="customAmount" class="form-control" min="1" placeholder="e.g., 5000"></div><button class="btn btn-primary" onclick="investCustom()">Invest Now</button></div>
             </div>
-
-            <!-- Fund Wallet -->
             <div id="walletSection" class="dashboard-section">
                 <h2>Fund Your Wallet</h2>
                 <div class="auth-card" style="max-width:600px;">
-                    <div class="method-selector" id="methodSelector">
-                        <div class="method-option selected" data-method="BTC" onclick="selectMethod('BTC')"><i class="fab fa-bitcoin"></i><div>Bitcoin</div></div>
-                        <div class="method-option" data-method="ETH" onclick="selectMethod('ETH')"><i class="fab fa-ethereum"></i><div>Ethereum</div></div>
-                        <div class="method-option" data-method="USDT" onclick="selectMethod('USDT')"><i class="fas fa-dollar-sign"></i><div>USDT</div></div>
-                        <div class="method-option" data-method="BANK" onclick="selectMethod('BANK')"><i class="fas fa-university"></i><div>Bank</div></div>
-                    </div>
+                    <div class="method-selector" id="methodSelector"><div class="method-option selected" data-method="BTC" onclick="selectMethod('BTC')"><i class="fab fa-bitcoin"></i><div>Bitcoin</div></div><div class="method-option" data-method="ETH" onclick="selectMethod('ETH')"><i class="fab fa-ethereum"></i><div>Ethereum</div></div><div class="method-option" data-method="USDT" onclick="selectMethod('USDT')"><i class="fas fa-dollar-sign"></i><div>USDT</div></div><div class="method-option" data-method="BANK" onclick="selectMethod('BANK')"><i class="fas fa-university"></i><div>Bank</div></div></div>
                     <div class="method-details" id="methodDetails"></div>
-                    <form id="depositForm" style="margin-top:20px;">
-                        <div class="form-group"><label>Amount (USD)</label><input type="number" id="depositAmount" class="form-control" min="10" required></div>
-                        <input type="hidden" id="selectedMethod" value="BTC">
-                        <button type="submit" class="btn btn-primary w-100">Request Deposit</button>
-                    </form>
+                    <form id="depositForm"><div class="form-group"><label>Amount (USD)</label><input type="number" id="depositAmount" class="form-control" min="10" required></div><input type="hidden" id="selectedMethod" value="BTC"><button type="submit" class="btn btn-primary w-100">Request Deposit</button></form>
                 </div>
             </div>
-
-            <!-- Withdraw -->
             <div id="withdrawSection" class="dashboard-section">
                 <h2>Withdraw Funds</h2>
                 <div class="auth-card" style="max-width:600px;">
                     <div class="withdraw-instructions" id="withdrawInstructions"></div>
-                    <form id="withdrawForm">
-                        <div class="form-group"><label>Amount</label><input type="number" id="withdrawAmount" class="form-control" min="1" required></div>
-                        <div class="form-group"><label>Method</label>
-                            <select id="withdrawMethod" class="form-control"><option value="bank">Bank</option><option value="crypto">Crypto</option><option value="paypal">PayPal</option></select>
-                        </div>
-                        <div class="form-group"><label>Details</label><textarea id="withdrawDetails" class="form-control" rows="3" required></textarea></div>
-                        <button type="submit" class="btn btn-primary w-100">Request</button>
-                    </form>
+                    <form id="withdrawForm"><div class="form-group"><label>Amount</label><input type="number" id="withdrawAmount" class="form-control" min="1" required></div><div class="form-group"><label>Method</label><select id="withdrawMethod" class="form-control"><option value="bank">Bank</option><option value="crypto">Crypto</option><option value="paypal">PayPal</option></select></div><div class="form-group"><label>Details</label><textarea id="withdrawDetails" class="form-control" rows="3" required></textarea></div><button type="submit" class="btn btn-primary w-100">Request</button></form>
                 </div>
             </div>
-
-            <!-- Referral -->
             <div id="referralSection" class="dashboard-section">
                 <h2>Referral Program</h2>
                 <div class="wallet-card"><h3>Your Referral Code</h3><p style="font-size:2rem;" id="userReferralCode">ACTIVE123</p><button class="btn btn-outline" onclick="copyReferralCode()">Copy</button></div>
             </div>
-
-            <!-- Portfolio -->
             <div id="portfolioSection" class="dashboard-section">
                 <h2>Your Active Investments</h2>
                 <div id="activeInvestmentsList"></div>
                 <div class="investment-message" id="investmentMessage"></div>
             </div>
-
-            <!-- Settings -->
             <div id="settingsSection" class="dashboard-section">
                 <h2>Account Settings</h2>
                 <div class="settings-panel">
-                    <div class="settings-section">
-                        <h3>Security</h3>
-                        <div class="security-item"><div><h4>Two-Factor Authentication</h4><p>Add extra security</p></div><label class="switch"><input type="checkbox" id="twoFactorToggle"><span class="slider"></span></label></div>
-                        <button class="btn btn-outline" id="changePasswordBtn">Change Password</button>
-                    </div>
-                    <div class="settings-section">
-                        <h3>Profile</h3>
-                        <form id="profileForm">
-                            <div class="form-group"><label>Full Name</label><input type="text" id="profileName" class="form-control"></div>
-                            <div class="form-group"><label>Currency</label><select id="profileCurrency" class="form-control"></select></div>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </form>
-                    </div>
+                    <div class="settings-section"><h3>Security</h3><div class="security-item"><div><h4>Two-Factor Authentication</h4><p>Add extra security</p></div><label class="switch"><input type="checkbox" id="twoFactorToggle"><span class="slider"></span></label></div><button class="btn btn-outline" id="changePasswordBtn">Change Password</button></div>
+                    <div class="settings-section"><h3>Profile</h3><form id="profileForm"><div class="form-group"><label>Full Name</label><input type="text" id="profileName" class="form-control"></div><div class="form-group"><label>Currency</label><select id="profileCurrency" class="form-control"></select></div><button type="submit" class="btn btn-primary">Save</button></form></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Panel -->
     <div id="adminPanel" class="page">
         <div class="admin-container">
             <div class="admin-header"><h2><i class="fas fa-user-shield"></i> Admin Panel</h2><button class="btn btn-outline" id="backToUserDashboard">Back</button></div>
-            <div class="admin-tabs">
-                <button class="btn btn-outline" onclick="showAdminTab('users')">Users</button>
-                <button class="btn btn-outline" onclick="showAdminTab('deposits')">Deposits</button>
-                <button class="btn btn-outline" onclick="showAdminTab('withdrawals')">Withdrawals</button>
-                <button class="btn btn-outline" onclick="showAdminTab('investments')">Investments</button>
-                <button class="btn btn-outline" onclick="showAdminTab('payment')">Payment</button>
-                <button class="btn btn-outline" onclick="showAdminTab('settings')">Banner</button>
-                <button class="btn btn-outline" onclick="showAdminTab('chats')">Chats</button>
-            </div>
+            <div class="admin-tabs"><button class="btn btn-outline" onclick="showAdminTab('users')">Users</button><button class="btn btn-outline" onclick="showAdminTab('deposits')">Deposits</button><button class="btn btn-outline" onclick="showAdminTab('withdrawals')">Withdrawals</button><button class="btn btn-outline" onclick="showAdminTab('investments')">Investments</button><button class="btn btn-outline" onclick="showAdminTab('payment')">Payment</button><button class="btn btn-outline" onclick="showAdminTab('settings')">Banner</button><button class="btn btn-outline" onclick="showAdminTab('chats')">Chats</button></div>
             <div id="usersTab" class="admin-card"><h3>Users</h3><div id="usersList"></div></div>
             <div id="depositsTab" class="admin-card" style="display:none;"><h3>Pending Deposits</h3><div id="pendingDepositsList"></div></div>
             <div id="withdrawalsTab" class="admin-card" style="display:none;"><h3>Withdrawals</h3><div id="withdrawalsList"></div></div>
-            <div id="investmentsTab" class="admin-card" style="display:none;"><h3>All Investments</h3><div id="adminInvestmentsList"></div></div>
-            <div id="paymentTab" class="admin-card" style="display:none;"><h3>Payment Settings</h3>
-                <div class="form-group"><label>BTC Address</label><input type="text" id="btcAddressInput" class="form-control"></div>
-                <div class="form-group"><label>ETH Address</label><input type="text" id="ethAddressInput" class="form-control"></div>
-                <div class="form-group"><label>USDT Address</label><input type="text" id="usdtAddressInput" class="form-control"></div>
-                <div class="form-group"><label>Bank Details</label><textarea id="bankDetailsInput" class="form-control" rows="4"></textarea></div>
-                <button class="btn btn-primary" onclick="savePaymentSettings()">Save</button>
-            </div>
-            <div id="settingsTab" class="admin-card" style="display:none;"><h3>Promo Banner</h3><textarea id="promoBannerInput" class="form-control" rows="4"></textarea><button class="btn btn-primary mt-2" onclick="savePromoBanner()">Save</button></div>
+            <div id="investmentsTab" class="admin-card" style="display:none;"><h3>All Investments</h3><div id="adminInvestmentsList"></div><div class="mt-2"><h4>Investment Message</h4><textarea id="investmentMessageInput" rows="3" class="form-control"></textarea><button class="btn btn-primary mt-2" onclick="saveInvestmentMessage()">Save</button></div></div>
+            <div id="paymentTab" class="admin-card" style="display:none;"><h3>Payment Settings</h3><div class="form-group"><label>BTC Address</label><input type="text" id="btcAddressInput" class="form-control"></div><div class="form-group"><label>ETH Address</label><input type="text" id="ethAddressInput" class="form-control"></div><div class="form-group"><label>USDT Address</label><input type="text" id="usdtAddressInput" class="form-control"></div><div class="form-group"><label>Bank Details</label><textarea id="bankDetailsInput" rows="4" class="form-control"></textarea></div><button class="btn btn-primary" onclick="savePaymentSettings()">Save</button></div>
+            <div id="settingsTab" class="admin-card" style="display:none;"><h3>Promo Banner</h3><textarea id="promoBannerInput" rows="4" class="form-control"></textarea><button class="btn btn-primary mt-2" onclick="savePromoBanner()">Save</button></div>
             <div id="chatsTab" class="admin-card" style="display:none;"><h3>Customer Chats</h3><div id="adminChatsList"></div></div>
         </div>
     </div>
 
-    <!-- Modals -->
-    <div class="modal" id="changePasswordModal">
-        <div class="modal-content">
-            <h3>Change Password</h3>
-            <form id="changePasswordForm">
-                <div class="form-group"><label>Current</label><input type="password" id="currentPassword" class="form-control" required></div>
-                <div class="form-group"><label>New</label><input type="password" id="newPassword" class="form-control" minlength="8" required></div>
-                <div class="form-group"><label>Confirm</label><input type="password" id="confirmNewPassword" class="form-control" minlength="8" required></div>
-                <button type="submit" class="btn btn-primary w-100">Update</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="changePasswordModal"><div class="modal-content"><h3>Change Password</h3><form id="changePasswordForm"><div class="form-group"><label>Current</label><input type="password" id="currentPassword" class="form-control" required></div><div class="form-group"><label>New</label><input type="password" id="newPassword" class="form-control" minlength="8" required></div><div class="form-group"><label>Confirm</label><input type="password" id="confirmNewPassword" class="form-control" minlength="8" required></div><button type="submit" class="btn btn-primary w-100">Update</button></form></div></div>
+    <div class="modal" id="editBalanceModal"><div class="modal-content"><h3>Edit User Balance</h3><form id="editBalanceForm"><input type="hidden" id="editUserId"><div class="form-group"><label>User</label><input type="text" id="editUserName" class="form-control" readonly></div><div class="form-group"><label>Current Balance</label><input type="text" id="editCurrentBalance" class="form-control" readonly></div><div class="form-group"><label>New Balance</label><input type="number" id="editNewBalance" class="form-control" step="0.01" required></div><button type="submit" class="btn btn-primary w-100">Update</button></form></div></div>
+    <div class="modal" id="editProfitModal"><div class="modal-content"><h3>Edit Investment Profit</h3><form id="editProfitForm"><input type="hidden" id="editInvestmentUserId"><input type="hidden" id="editInvestmentIndex"><div class="form-group"><label>User</label><input type="text" id="editInvestmentUser" class="form-control" readonly></div><div class="form-group"><label>Plan</label><input type="text" id="editInvestmentPlan" class="form-control" readonly></div><div class="form-group"><label>Invested</label><input type="text" id="editInvestmentAmount" class="form-control" readonly></div><div class="form-group"><label>Profit</label><input type="number" id="editInvestmentProfit" class="form-control" step="0.01" required></div><button type="submit" class="btn btn-primary w-100">Update</button></form></div></div>
 
-    <div class="modal" id="editBalanceModal">
-        <div class="modal-content">
-            <h3>Edit User Balance</h3>
-            <form id="editBalanceForm">
-                <input type="hidden" id="editUserId">
-                <div class="form-group"><label>User</label><input type="text" id="editUserName" class="form-control" readonly></div>
-                <div class="form-group"><label>Current Balance</label><input type="text" id="editCurrentBalance" class="form-control" readonly></div>
-                <div class="form-group"><label>New Balance</label><input type="number" id="editNewBalance" class="form-control" step="0.01" required></div>
-                <button type="submit" class="btn btn-primary w-100">Update</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal" id="editProfitModal">
-        <div class="modal-content">
-            <h3>Edit Investment Profit</h3>
-            <form id="editProfitForm">
-                <input type="hidden" id="editInvestmentUserId">
-                <input type="hidden" id="editInvestmentIndex">
-                <div class="form-group"><label>User</label><input type="text" id="editInvestmentUser" class="form-control" readonly></div>
-                <div class="form-group"><label>Plan</label><input type="text" id="editInvestmentPlan" class="form-control" readonly></div>
-                <div class="form-group"><label>Invested</label><input type="text" id="editInvestmentAmount" class="form-control" readonly></div>
-                <div class="form-group"><label>Profit</label><input type="number" id="editInvestmentProfit" class="form-control" step="0.01" required></div>
-                <button type="submit" class="btn btn-primary w-100">Update</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ===== FIREBASE & JAVASCRIPT ===== -->
     <script>
-        // Firebase config (yours)
+        // 🔥 YOUR FIREBASE CONFIG (already set)
         const firebaseConfig = {
             apiKey: "AIzaSyBfKCdW4lJ-3DY-nQsrFVbi3Vx_t4k8xjs",
             authDomain: "active-investments-e5b76.firebaseapp.com",
@@ -599,32 +364,27 @@
         let unsubscribeChat = null;
 
         // Toast
-        function showToast(msg, type='success', title='Success'){
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            let icon = type==='error'?'fa-exclamation-circle': type==='warning'?'fa-exclamation-triangle':'fa-check-circle';
-            toast.innerHTML = `<i class="fas ${icon}"></i><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>`;
-            container.appendChild(toast);
-            setTimeout(()=>{if(toast.parentElement) toast.remove();},3000);
+        function showToast(msg, type='success', title='Success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            let icon = type==='error'?'fa-exclamation-circle':type==='warning'?'fa-exclamation-triangle':'fa-check-circle';
+            t.innerHTML = `<i class="fas ${icon}"></i><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>`;
+            c.appendChild(t);
+            setTimeout(()=>{if(t.parentElement) t.remove();},3000);
         }
 
         // Menu
-        function toggleMenu(){
-            document.getElementById('sideMenu').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
-        }
-        document.getElementById('menuToggle').addEventListener('click', toggleMenu);
-        document.getElementById('closeMenuBtn').addEventListener('click', toggleMenu);
-        document.getElementById('overlay').addEventListener('click', toggleMenu);
+        function toggleMenu(){ document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+        document.getElementById('menuToggle').addEventListener('click',toggleMenu);
+        document.getElementById('closeMenuBtn').addEventListener('click',toggleMenu);
+        document.getElementById('overlay').addEventListener('click',toggleMenu);
 
-        // Page navigation
-        window.showPage = function(pageId){
+        window.showPage = function(id){
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0,0);
+            document.getElementById(id).classList.add('active');
             if(document.getElementById('sideMenu').classList.contains('open')) toggleMenu();
-        }
+        };
 
         // Authentication
         document.getElementById('signupForm').addEventListener('submit', async (e)=>{
@@ -686,8 +446,10 @@
         });
 
         function updateUserUI(){
+            const menu = document.getElementById('menuItems');
+            const logoutBtn = document.getElementById('logoutMenuBtn');
             if(!currentUser){
-                document.getElementById('menuItems').innerHTML = `
+                menu.innerHTML = `
                     <li><a href="#" id="menuHome">Home</a></li>
                     <li><a href="#" id="menuAbout">About</a></li>
                     <li><a href="#" id="menuPlans">Plans</a></li>
@@ -695,17 +457,17 @@
                     <li><a href="#" id="menuLogin">Login</a></li>
                     <li><a href="#" id="menuSignup">Sign Up</a></li>
                 `;
-                document.getElementById('logoutMenuBtn').style.display = 'none';
-                document.getElementById('menuHome').addEventListener('click',(e)=>{e.preventDefault(); showPage('landingPage'); toggleMenu();});
-                document.getElementById('menuAbout').addEventListener('click',(e)=>{e.preventDefault(); showPage('aboutPage'); toggleMenu();});
-                document.getElementById('menuPlans').addEventListener('click',(e)=>{e.preventDefault(); showPage('landingPage'); toggleMenu();});
-                document.getElementById('menuReferral').addEventListener('click',(e)=>{e.preventDefault(); showPage('referralPage'); toggleMenu();});
-                document.getElementById('menuLogin').addEventListener('click',(e)=>{e.preventDefault(); showPage('loginPage'); toggleMenu();});
-                document.getElementById('menuSignup').addEventListener('click',(e)=>{e.preventDefault(); showPage('signupPage'); toggleMenu();});
+                logoutBtn.style.display = 'none';
+                document.getElementById('menuHome')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('landingPage'); toggleMenu();});
+                document.getElementById('menuAbout')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('aboutPage'); toggleMenu();});
+                document.getElementById('menuPlans')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('landingPage'); toggleMenu();});
+                document.getElementById('menuReferral')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('referralPage'); toggleMenu();});
+                document.getElementById('menuLogin')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('loginPage'); toggleMenu();});
+                document.getElementById('menuSignup')?.addEventListener('click',(e)=>{e.preventDefault(); showPage('signupPage'); toggleMenu();});
                 return;
             }
             let adminItem = currentUser.role==='admin' ? '<li><a href="#" id="menuAdmin"><i class="fas fa-user-shield"></i> Admin</a></li>' : '';
-            document.getElementById('menuItems').innerHTML = `
+            menu.innerHTML = `
                 <li><a href="#" id="menuOverview" class="active"><i class="fas fa-home"></i> Overview</a></li>
                 <li><a href="#" id="menuInvest"><i class="fas fa-chart-line"></i> Invest</a></li>
                 <li><a href="#" id="menuWallet"><i class="fas fa-wallet"></i> Fund Wallet</a></li>
@@ -715,8 +477,8 @@
                 <li><a href="#" id="menuSettings"><i class="fas fa-cog"></i> Settings</a></li>
                 ${adminItem}
             `;
-            document.getElementById('logoutMenuBtn').style.display = 'block';
-            document.getElementById('logoutMenuBtn').onclick = ()=>{
+            logoutBtn.style.display = 'block';
+            logoutBtn.onclick = ()=>{
                 localStorage.removeItem('currentUserId'); currentUser=null; updateUserUI(); showPage('landingPage'); showToast('Logged out');
             };
             document.getElementById('menuOverview').addEventListener('click',(e)=>{e.preventDefault(); showDashboardSection('overview'); toggleMenu();});
@@ -750,7 +512,6 @@
             if(active) active.classList.add('active');
         }
 
-        // Investment
         window.investInPlan = async (plan, amount)=>{
             if(!currentUser){ showToast('Login first','error'); return; }
             if(currentUser.balance < amount){ showToast('Insufficient balance','error'); return; }
@@ -771,7 +532,6 @@
             await investInPlan('Custom', amount);
         };
 
-        // Load active investments
         async function loadActiveInvestments(){
             if(!currentUser || !currentUser.investments) return;
             const container = document.getElementById('activeInvestmentsList');
@@ -788,7 +548,6 @@
             `).join('');
         }
 
-        // Deposit method selection
         window.selectMethod = function(method){
             document.querySelectorAll('.method-option').forEach(o=>o.classList.remove('selected'));
             document.querySelector(`.method-option[data-method="${method}"]`).classList.add('selected');
@@ -812,7 +571,6 @@
             document.getElementById('depositForm').reset();
         });
 
-        // Withdraw
         document.getElementById('withdrawForm').addEventListener('submit', async (e)=>{
             e.preventDefault();
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -824,13 +582,11 @@
             document.getElementById('withdrawForm').reset();
         });
 
-        // Referral copy
         window.copyReferralCode = ()=>{
             navigator.clipboard.writeText(document.getElementById('userReferralCode').textContent);
             showToast('Copied!');
         };
 
-        // Settings
         document.getElementById('twoFactorToggle').addEventListener('change', function(){
             showToast(this.checked ? '2FA enabled (demo)' : '2FA disabled');
         });
@@ -856,7 +612,6 @@
             showToast('Profile updated');
         });
 
-        // Admin tabs
         window.showAdminTab = async (tab)=>{
             ['users','deposits','withdrawals','investments','payment','settings','chats'].forEach(id=>document.getElementById(id+'Tab').style.display='none');
             document.getElementById(tab+'Tab').style.display='block';
@@ -919,7 +674,20 @@
                 document.getElementById('promoBannerInput').value = promo.exists ? promo.data().html : '<h2>THIS IS THE BEST TIME TO INVEST</h2><p>INVEST $10,000 GET $50,000</p><p>INVEST $50,000 GET $250,000</p>';
             }
             if(tab==='chats'){
-                loadAdminChats();
+                const chats = await db.collection('chats').orderBy('timestamp').get();
+                const users = {};
+                chats.forEach(doc=>{
+                    const data = doc.data();
+                    if(!users[data.chatId]) users[data.chatId] = [];
+                    users[data.chatId].push(data);
+                });
+                let html = '';
+                for(const [chatId, msgs] of Object.entries(users)){
+                    if(chatId === 'admin') continue;
+                    const last = msgs[msgs.length-1];
+                    html += `<div class="user-list-item"><div><strong>User ${chatId}</strong><br>Last: ${last.text}</div><button class="btn btn-primary btn-sm" onclick="adminReply('${chatId}')">Reply</button></div>`;
+                }
+                document.getElementById('adminChatsList').innerHTML = html || '<p>No chats yet</p>';
             }
         };
 
@@ -995,6 +763,12 @@
             showToast('Payment settings saved');
         };
 
+        window.saveInvestmentMessage = async ()=>{
+            const msg = document.getElementById('investmentMessageInput').value;
+            await db.collection('settings').doc('investmentMessage').set({ message:msg });
+            showToast('Investment message saved');
+        };
+
         window.savePromoBanner = async ()=>{
             const html = document.getElementById('promoBannerInput').value;
             await db.collection('settings').doc('promo').set({ html });
@@ -1002,12 +776,9 @@
             loadPromoBanner();
         };
 
-        // Live chat
         document.getElementById('chatButton').addEventListener('click', ()=>{
             document.getElementById('chatModal').classList.toggle('open');
-            if(currentUser && document.getElementById('chatModal').classList.contains('open')){
-                loadChatMessages();
-            }
+            if(currentUser && document.getElementById('chatModal').classList.contains('open')) loadChatMessages();
         });
         document.getElementById('closeChat').addEventListener('click', ()=>{
             document.getElementById('chatModal').classList.remove('open');
@@ -1046,30 +817,15 @@
             input.value = '';
         });
 
-        async function loadAdminChats(){
-            const chats = await db.collection('chats').orderBy('timestamp').get();
-            const users = {};
-            chats.forEach(doc=>{
-                const data = doc.data();
-                if(!users[data.chatId]) users[data.chatId] = [];
-                users[data.chatId].push(data);
-            });
-            let html = '';
-            for(const [chatId, msgs] of Object.entries(users)){
-                if(chatId === 'admin') continue;
-                const last = msgs[msgs.length-1];
-                html += `<div class="user-list-item"><div><strong>${last.sender === currentUser?.id ? 'You' : 'User'}</strong><br>Last: ${last.text}</div><button class="btn btn-primary btn-sm" onclick="adminReply('${chatId}')">Reply</button></div>`;
-            }
-            document.getElementById('adminChatsList').innerHTML = html || '<p>No chats yet</p>';
-        }
-
         window.adminReply = (userId)=>{
-            // For simplicity, we'll just open the chat modal and set the context
-            // In a full implementation, you'd set a current reply target.
-            alert('Reply feature would open a direct chat with user. For now, use the main chat.');
+            // For simplicity, just open chat modal for admin
+            if(currentUser && currentUser.role==='admin'){
+                // In a real implementation, you'd set a target user. Here we just open chat.
+                document.getElementById('chatModal').classList.add('open');
+                loadChatMessages();
+            }
         };
 
-        // Load payment settings, promo, etc.
         async function loadPaymentSettings(){
             const pay = await db.collection('settings').doc('payment').get();
             if(pay.exists) paymentSettings = pay.data();
@@ -1090,7 +846,6 @@
             document.getElementById('investmentMessage').innerHTML = msg.exists ? msg.data().message : 'Your investment will grow with 60% in the next 3 days.';
         }
 
-        // Check login on load
         (async ()=>{
             await loadPaymentSettings();
             await loadPromoBanner();
@@ -1111,7 +866,6 @@
             }
         })();
 
-        // Navigation
         document.getElementById('homeLink').addEventListener('click',(e)=>{e.preventDefault(); showPage('landingPage');});
         document.getElementById('getStartedBtn').addEventListener('click',()=>showPage('signupPage'));
         document.getElementById('learnMoreBtn').addEventListener('click',()=>showPage('aboutPage'));
@@ -1121,10 +875,11 @@
         document.getElementById('toSignupLink').addEventListener('click',(e)=>{e.preventDefault(); showPage('signupPage');});
         document.getElementById('backToUserDashboard').addEventListener('click',()=>showPage('userDashboard'));
 
-        // Close modals
         document.querySelectorAll('.modal').forEach(m=>{
             m.addEventListener('click',(e)=>{if(e.target===m) m.classList.remove('active');});
         });
+
+        AOS.init({ duration:800, once:true });
     </script>
 </body>
 </html>
