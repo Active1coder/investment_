@@ -186,6 +186,7 @@
             border: none;
             transition: all 0.3s ease;
             text-decoration: none;
+            white-space: nowrap;
         }
 
         .btn-primary {
@@ -234,6 +235,11 @@
         .btn-warning {
             background: var(--warning);
             color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
         }
 
         /* ===== NAVBAR ===== */
@@ -687,11 +693,13 @@
             border-radius: 12px;
         }
 
-        /* ===== DASHBOARD (no sidebar now) ===== */
+        /* ===== DASHBOARD (fully responsive) ===== */
         .dashboard-container {
             min-height: calc(100vh - 80px);
             background: var(--gray-50);
             padding: 20px;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .dashboard-header {
@@ -699,10 +707,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .dashboard-header h2 {
             font-size: 1.5rem;
+            word-break: break-word;
         }
 
         .dashboard-section {
@@ -739,6 +750,7 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--gray-900);
+            word-break: break-word;
         }
 
         .wallet-card {
@@ -747,12 +759,14 @@
             padding: 30px;
             color: white;
             margin-bottom: 30px;
+            word-break: break-word;
         }
 
         .wallet-balance {
             font-size: 2.5rem;
             font-weight: 700;
             margin: 10px 0;
+            word-break: break-word;
         }
 
         .settings-panel {
@@ -760,6 +774,7 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: var(--shadow);
+            overflow-x: auto;
         }
 
         .settings-section {
@@ -789,6 +804,7 @@
             display: inline-block;
             width: 50px;
             height: 26px;
+            flex-shrink: 0;
         }
 
         .switch input {
@@ -874,7 +890,7 @@
         /* ===== DEPOSIT METHODS ===== */
         .method-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 10px;
             margin: 20px 0;
         }
@@ -909,6 +925,7 @@
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
+            word-break: break-word;
         }
 
         /* ===== WITHDRAW SECTION ===== */
@@ -930,6 +947,8 @@
         /* ===== ADMIN PANEL ===== */
         .admin-container {
             padding: 40px 20px;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .admin-header {
@@ -948,12 +967,18 @@
             flex-wrap: wrap;
         }
 
+        .admin-tabs .btn-outline {
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+
         .admin-card {
             background: white;
             padding: 25px;
             border-radius: 16px;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
+            overflow-x: auto;
         }
 
         .admin-card h3 {
@@ -993,6 +1018,7 @@
             display: flex;
             gap: 5px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .profit-edit input {
@@ -1041,7 +1067,7 @@
             overflow-y: auto;
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== RESPONSIVE FIXES ===== */
         @media (max-width: 992px) {
             .hero-content {
                 grid-template-columns: 1fr;
@@ -1065,6 +1091,22 @@
             .investment-card {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            
+            .method-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dashboard-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .wallet-balance {
+                font-size: 2rem;
+            }
+            
+            .admin-tabs .btn-outline {
+                min-width: 100%;
             }
         }
 
@@ -1093,6 +1135,18 @@
                 width: 40px;
                 height: 50px;
                 font-size: 1.2rem;
+            }
+            
+            .method-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card .value {
+                font-size: 1.5rem;
+            }
+            
+            .dashboard-container {
+                padding: 15px;
             }
         }
 
@@ -1413,7 +1467,7 @@
         <div class="dashboard-container">
             <div class="dashboard-header">
                 <h2>Welcome, <span id="userName">User</span>!</h2>
-                <!-- Menu button already in navbar, so nothing here -->
+                <!-- Menu button already in navbar -->
             </div>
             
             <!-- Overview Section -->
@@ -2109,13 +2163,13 @@
             const detailsDiv = document.getElementById('methodDetails');
             let html = '';
             if (method === 'BTC') {
-                html = `<p><strong>Bitcoin Address:</strong></p><div class="wallet-address">${paymentSettings.btc}</div>`;
+                html = `<p><strong>Bitcoin Address:</strong></p><div class="wallet-address" style="word-break:break-all;">${paymentSettings.btc}</div>`;
             } else if (method === 'ETH') {
-                html = `<p><strong>Ethereum Address:</strong></p><div class="wallet-address">${paymentSettings.eth}</div>`;
+                html = `<p><strong>Ethereum Address:</strong></p><div class="wallet-address" style="word-break:break-all;">${paymentSettings.eth}</div>`;
             } else if (method === 'USDT') {
-                html = `<p><strong>Tether (USDT) Address:</strong></p><div class="wallet-address">${paymentSettings.usdt}</div>`;
+                html = `<p><strong>Tether (USDT) Address:</strong></p><div class="wallet-address" style="word-break:break-all;">${paymentSettings.usdt}</div>`;
             } else if (method === 'BANK') {
-                html = `<p><strong>Bank Transfer Details:</strong></p><pre style="white-space: pre-wrap;">${paymentSettings.bank}</pre>`;
+                html = `<p><strong>Bank Transfer Details:</strong></p><pre style="white-space: pre-wrap; word-break:break-word;">${paymentSettings.bank}</pre>`;
             }
             detailsDiv.innerHTML = html;
         }
@@ -2355,7 +2409,6 @@
 
             if (tab === 'payment') {
                 document.getElementById('paymentTab').style.display = 'block';
-                // Load current payment settings
                 const paymentDoc = await db.collection('settings').doc('payment').get();
                 if (paymentDoc.exists) {
                     const data = paymentDoc.data();
@@ -2475,10 +2528,8 @@
             const usdt = document.getElementById('usdtAddressInput').value;
             const bank = document.getElementById('bankDetailsInput').value;
             await db.collection('settings').doc('payment').set({ btc, eth, usdt, bank });
-            // Update local cache
             paymentSettings = { btc, eth, usdt, bank };
             showToast('Payment settings saved.', 'success', 'Admin Action');
-            // If deposit section is visible, update displayed details
             if (document.getElementById('walletSection').classList.contains('active')) {
                 updateMethodDetails(document.getElementById('selectedMethod').value);
             }
@@ -2527,7 +2578,6 @@
             if (paymentDoc.exists) {
                 paymentSettings = paymentDoc.data();
             }
-            // Update deposit page if open
             if (document.getElementById('walletSection').classList.contains('active')) {
                 updateMethodDetails(document.getElementById('selectedMethod').value);
             }
@@ -2541,7 +2591,7 @@
 
         // ===== CHECK LOGIN =====
         async function checkLogin() {
-            await loadPaymentSettings(); // always load payment settings
+            await loadPaymentSettings();
             if (currentUserId) {
                 const user = await db.collection('users').doc(currentUserId).get();
                 if (user.exists) {
